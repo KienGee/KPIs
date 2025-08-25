@@ -35,7 +35,7 @@ KPIs/
 ### Yêu cầu hệ thống
 - ✅ .NET 8 SDK
 - ✅ Node.js 16.20.2+
-- ✅ SQL Server (VM IP: 192.168.1.254)
+- ✅ SQL Server 
 - ✅ Angular CLI 16
 
 ### 1. Backend (.NET API)
@@ -83,7 +83,7 @@ npm start
    - **Mật khẩu**: Bắt buộc
    - **Họ và tên**: Bắt buộc
    - **Email**: Bắt buộc, đúng định dạng `name@domain.com`
-4. ✅ Hệ thống tự động gán role **"Phó Hiệu trưởng"** (role_id = 2)
+4. ✅ Hệ thống tự động gán role **"Phó Hiệu trưởng"** 
 
 ### ✅ Đăng nhập
 - Sử dụng username/password đã đăng ký
