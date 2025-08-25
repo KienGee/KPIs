@@ -1,0 +1,158 @@
+<div class="kpi-container">
+  <mat-card class="kpi-card">
+    <mat-card-header class="card-header">
+      <mat-card-title class="card-title">Xem KPIs Đơn vị - Năm 2025</mat-card-title>
+      <mat-card-subtitle class="card-subtitle">Theo Quyết định 1125/QD-DHXDHN</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="form-field">
+        <mat-form-field appearance="fill">
+          <mat-label>Chọn Đơn vị</mat-label>
+          <mat-select [(value)]="selectedUnit" (selectionChange)="loadKpis()">
+            <mat-option *ngFor="let unit of units" [value]="unit.id">{{ unit.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-tab-group *ngIf="kpis">
+        <mat-tab label="KPI Chức năng">
+          <div class="table-container">
+            <mat-table [dataSource]="functionDataSource" matSort>
+              <ng-container matColumnDef="stt">
+                <mat-header-cell *matHeaderCellDef>STT</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.stt}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="indicator">
+                <mat-header-cell *matHeaderCellDef>Chỉ tiêu</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.indicator}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="target">
+                <mat-header-cell *matHeaderCellDef>Mục tiêu</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.target}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="weight">
+                <mat-header-cell *matHeaderCellDef>Trọng số</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.weight}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="formula">
+                <mat-header-cell *matHeaderCellDef>Công thức</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.formula}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="actual">
+                <mat-header-cell *matHeaderCellDef>Thực tế</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.actual}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="score">
+                <mat-header-cell *matHeaderCellDef>Điểm KPI</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.score}}</mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="functionColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: functionColumns;"></mat-row>
+            </mat-table>
+            <div class="total-score">Tổng KPI Chức năng: {{ totalFunction }}</div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="KPI Mục tiêu">
+          <div class="table-container">
+            <mat-table [dataSource]="targetDataSource" matSort>
+              <ng-container matColumnDef="stt">
+                <mat-header-cell *matHeaderCellDef>STT</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.stt}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="indicator">
+                <mat-header-cell *matHeaderCellDef>Chỉ tiêu</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.indicator}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="target">
+                <mat-header-cell *matHeaderCellDef>Mục tiêu</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.target}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="weight">
+                <mat-header-cell *matHeaderCellDef>Trọng số</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.weight}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="formula">
+                <mat-header-cell *matHeaderCellDef>Công thức</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.formula}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="actual">
+                <mat-header-cell *matHeaderCellDef>Thực tế</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.actual}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="score">
+                <mat-header-cell *matHeaderCellDef>Điểm KPI</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.score}}</mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="targetColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: targetColumns;"></mat-row>
+            </mat-table>
+            <div class="total-score">Tổng KPI Mục tiêu: {{ totalTarget }}</div>
+          </div>
+        </mat-tab>
+
+        <mat-tab label="KPI Tuân thủ">
+          <div class="table-container">
+            <mat-table [dataSource]="complianceDataSource" matSort>
+              <ng-container matColumnDef="stt">
+                <mat-header-cell *matHeaderCellDef>STT</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.stt}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="indicator">
+                <mat-header-cell *matHeaderCellDef>Chỉ tiêu</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.indicator}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="target">
+                <mat-header-cell *matHeaderCellDef>Mục tiêu</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.target}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="weight">
+                <mat-header-cell *matHeaderCellDef>Trọng số</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.weight}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="formula">
+                <mat-header-cell *matHeaderCellDef>Công thức</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.formula}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="actual">
+                <mat-header-cell *matHeaderCellDef>Thực tế</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.actual}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="score">
+                <mat-header-cell *matHeaderCellDef>Điểm KPI</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{row.score}}</mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="complianceColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: complianceColumns;"></mat-row>
+            </mat-table>
+            <div class="total-score">Tổng KPI Tuân thủ: {{ totalCompliance }}</div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+
+      <div class="chart-section" *ngIf="kpis">
+        <h3>Phân tích KPI</h3>
+        <div class="chart-placeholder">
+          <div class="pie-chart-mock"></div>
+          <div class="chart-legend">
+            <div class="legend-item"><span class="color-1"></span> Chức năng ({{ totalFunction }})</div>
+            <div class="legend-item"><span class="color-2"></span> Mục tiêu ({{ totalTarget }})</div>
+            <div class="legend-item"><span class="color-3"></span> Tuân thủ ({{ totalCompliance }})</div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="action-buttons">
+      <button mat-raised-button color="primary" (click)="exportToExcel()">Xuất Excel</button>
+      <button mat-raised-button color="accent" (click)="generateReport()">Tạo báo cáo</button>
+      <button mat-raised-button color="warn" (click)="analyzeWithAI()">Phân tích AI</button>
+    </mat-card-actions>
+
+    <div class="ai-insights" *ngIf="aiInsights">
+      <h3>🤖 Phân tích AI</h3>
+      <p>{{ aiInsights }}</p>
+    </div>
+  </mat-card>
+</div>

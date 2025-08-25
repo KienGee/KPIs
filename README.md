@@ -1,241 +1,324 @@
-# 🏛️ KPI Management System - Hanoi University of Civil Engineering
+# KPI Management System 📊
 
-A comprehensive web-based KPI (Key Performance Indicator) management system built with Angular and Angular Material for tracking and analyzing university performance metrics.
+Hệ thống quản lý KPI cho Trường Đại học Xây dựng Hà Nội - Hanoi University of Civil Engineering
 
-## 🚀 Features
+## 🎯 Tổng quan
 
-### 📊 Dashboard
-- **User Authentication** - Secure login system with mock authentication
-- **Responsive Design** - Works seamlessly on desktop and mobile devices
-- **Collapsible Sidebar** - Easy navigation between different sections
-- **University Branding** - Complete with HUCE logo and styling
+Ứng dụng web quản lý chỉ số hiệu suất (KPI) được xây dựng với:
+- **Backend**: .NET 8 Web API
+- **Frontend**: Angular 16
+- **Database**: SQL Server (VM: 192.168.1.254)
+- **Authentication**: JWT Bearer Token + BCrypt
+- **UI Framework**: Angular Material
 
-### 📈 KPI Management
-- **Unit Selection** - Choose from different university departments
-- **Multi-category KPIs**:
-  - **Functional KPIs** (Chức năng) - Core operational metrics
-  - **Target KPIs** (Mục tiêu) - Strategic goal tracking
-  - **Compliance KPIs** (Tuân thủ) - Regulatory compliance monitoring
-- **Data Tables** - Sortable and responsive tables with detailed metrics
-- **Real-time Calculations** - Automatic score calculations and totals
+## 🏗️ Kiến trúc hệ thống
 
-### 🤖 Analytics & Reporting
-- **Visual Charts** - Mock pie charts for data visualization
-- **AI Insights** - Automated analysis and recommendations
-- **Export Functions** - Excel export capabilities (in development)
-- **Report Generation** - Comprehensive reporting tools (in development)
-
-## 🛠️ Technology Stack
-
-- **Frontend Framework**: Angular 15+
-- **UI Library**: Angular Material
-- **Styling**: SCSS/CSS with responsive design
-- **Forms**: Reactive Forms with validation
-- **Routing**: Angular Router
-- **Build Tool**: Angular CLI
-- **Package Manager**: npm
-
-## 📋 Prerequisites
-
-Before running this application, make sure you have the following installed:
-
-- **Node.js** (version 16.x or higher)
-- **npm** (version 8.x or higher)
-- **Angular CLI** (version 15.x or higher)
-
-```bash
-# Check versions
-node --version
-npm --version
-ng version
+```
+KPIs/
+├── src/
+│   └── app/
+│       ├── BE/              # Backend .NET 8 API
+│       │   ├── Controllers/ # API Controllers (Auth, KPI)
+│       │   ├── Services/    # Business Logic
+│       │   ├── Models/      # Data Models & DTOs
+│       │   ├── Data/        # Entity Framework DbContext
+│       │   └── Program.cs   # App Entry Point
+│       └── FE/              # Frontend Angular 16
+│           ├── auth/        # Authentication Module
+│           ├── dashboard/   # Dashboard Components
+│           └── shared/      # Shared Components
+└── README.md
 ```
 
-## 🔧 Installation
+## 🚀 Cài đặt và chạy
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd KPIs
-   ```
+### Yêu cầu hệ thống
+- ✅ .NET 8 SDK
+- ✅ Node.js 16.20.2+
+- ✅ SQL Server (VM IP: 192.168.1.254)
+- ✅ Angular CLI 16
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### 1. Backend (.NET API)
 
-3. **Install Angular Material** (if not already installed)
-   ```bash
-   ng add @angular/material
-   ```
-
-## 🚀 Running the Application
-
-### Development Server
 ```bash
+cd src/app/BE
+dotnet restore
+dotnet run
+```
+
+**Backend endpoints:**
+- HTTP: `http://localhost:5197` ✅
+- HTTPS: `https://localhost:7297` ✅
+- Test: `http://localhost:5197/api/auth/test`
+
+### 2. Frontend (Angular)
+
+```bash
+cd src/app/FE
+npm install
 npm start
-# or
-ng serve
-```
-Navigate to `http://localhost:4200/` in your browser.
-
-### Production Build
-```bash
-npm run build
-# or
-ng build --prod
-```
-The build artifacts will be stored in the `dist/` directory.
-
-## 📱 Usage
-
-### 1. Login
-- Navigate to `http://localhost:4200/login`
-- Use any credentials to login (mock authentication)
-- System will redirect to dashboard upon successful login
-
-### 2. Dashboard Navigation
-- **Tổng quan** - Overview and welcome screen
-- **KPI Đơn vị** - Unit KPI management and viewing
-- **Báo cáo** - Reports and analytics (placeholder)
-- **Cài đặt** - System settings (placeholder)
-
-### 3. KPI Management
-- Select a unit from the dropdown
-- Browse through different KPI categories using tabs
-- View detailed metrics in sortable tables
-- Generate AI insights for performance analysis
-- Export data or generate reports
-
-## 🏗️ Project Structure
-
-```
-src/
-├── app/
-│   ├── auth/
-│   │   ├── login/                 # Login component
-│   │   └── services/              # Authentication service
-│   ├── dashboard/                 # Main dashboard component
-│   ├── unit-kpi-view/            # KPI viewing component
-│   ├── shared/                   # Shared components and services
-│   ├── app-routing.module.ts     # Application routing
-│   ├── app.module.ts             # Main application module
-│   └── app.component.*           # Root component
-├── assets/
-│   └── images/                   # University logos and images
-└── styles.css                   # Global styles
 ```
 
-## 🎨 Components Overview
+**Frontend URL:** `http://localhost:4200` ✅
 
-### LoginComponent
-- Full-screen login interface
-- University branding
-- Reactive form validation
-- Mock authentication integration
+### 3. Database Configuration
 
-### DashboardComponent
-- Responsive sidebar navigation
-- Header with user info and logout
-- Content area with routing
-- Collapsible menu functionality
 
-### UnitKpiViewComponent
-- Angular Material data tables
-- Tab-based navigation
-- Form controls for unit selection
-- Chart visualization
-- Action buttons for export/analysis
+**Cấu trúc database:**
+- ✅ `Users` - Quản lý người dùng
+- ✅ `Roles` - Hệ thống vai trò (5 roles)
+- ✅ `UserRoles` - Liên kết user-role
+- ✅ `Departments` - Phòng ban/đơn vị
+- 🚧 `Kpis` - Định nghĩa KPI
+- 🚧 `AssignedKpis` - Phân công KPI
+- 🚧 `KpiEvaluations` - Đánh giá KPI
 
-## 🔐 Authentication
+## 🔐 Hệ thống xác thực
 
-Currently uses **mock authentication** for demonstration purposes:
-- Any username/password combination will work
-- JWT token simulation
-- Automatic redirect handling
-- Session management
+### ✅ Đăng ký tài khoản mới
+1. Truy cập `http://localhost:4200/login`
+2. Nhấp "Đăng ký tài khoản mới"
+3. Điền thông tin **BẮT BUỘC**:
+   - **Tên đăng nhập**: Duy nhất, không được trùng
+   - **Mật khẩu**: Bắt buộc
+   - **Họ và tên**: Bắt buộc
+   - **Email**: Bắt buộc, đúng định dạng `name@domain.com`
+4. ✅ Hệ thống tự động gán role **"Phó Hiệu trưởng"** (role_id = 2)
 
-> **Note**: Replace with real authentication service for production use.
+### ✅ Đăng nhập
+- Sử dụng username/password đã đăng ký
+- Nhận JWT token để xác thực API calls
+- Session được duy trì trong localStorage
 
-## 🎯 Mock Data
+## 📋 Hệ thống vai trò (Roles)
 
-The application includes comprehensive mock data for:
-- **University Units**: Different departments and faculties
-- **KPI Metrics**: Sample performance indicators with targets and actual values
-- **Scoring System**: Automated calculations based on performance
-- **AI Insights**: Simulated intelligent analysis
+| Role ID | Tên vai trò | Mô tả | Status |
+|---------|-------------|-------|--------|
+| 1 | Trưởng đơn vị | Quản lý cấp đơn vị | ✅ |
+| 2 | **Phó Hiệu trưởng** | **Mặc định cho user mới** | ✅ |
+| 3 | Giảng viên | Giảng viên | ✅ |
+| 4 | Chuyên viên Nhận viên | Nhân viên chuyên môn | ✅ |
+| 5 | Admin | Quản trị viên hệ thống | ✅ |
 
-## 🚧 Development Status
+## 🔧 API Endpoints
 
-### ✅ Completed Features
-- ✅ User authentication and routing
-- ✅ Responsive dashboard layout
-- ✅ KPI data tables with Angular Material
-- ✅ Tab-based navigation
-- ✅ Mock data integration
-- ✅ AI insights simulation
-- ✅ University branding
+### Authentication APIs
+- ✅ `POST /api/auth/register` - Đăng ký user mới
+- ✅ `POST /api/auth/login` - Đăng nhập
+- ✅ `GET /api/auth/test` - Test API connectivity
+- ✅ `GET /` - API status
 
-### 🔄 In Development
-- 🔄 Excel export functionality
-- 🔄 PDF report generation
-- 🔄 Real chart integration (Chart.js/D3.js)
-- 🔄 Database integration
-- 🔄 Real-time data updates
+### KPI Management APIs (🚧 Đang phát triển)
+- 🚧 `GET /api/kpi` - Danh sách KPI
+- 🚧 `POST /api/kpi` - Tạo KPI mới
+- 🚧 `PUT /api/kpi/{id}` - Cập nhật KPI
+- 🚧 `DELETE /api/kpi/{id}` - Xóa KPI
 
-### 📋 Planned Features
-- 📋 User role management
-- 📋 Advanced filtering and search
-- 📋 Email notifications
-- 📋 Data import capabilities
-- 📋 Audit logging
+## 🎨 Giao diện người dùng
 
-## 🤝 Contributing
+### ✅ Trang đăng nhập
+- Form đăng nhập với real-time validation
+- Chuyển đổi liền mạch sang form đăng ký
+- Responsive design với Angular Material
+- Error handling và success messages
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### 🚧 Dashboard (Đang phát triển)
+- Tổng quan KPI cá nhân
+- Biểu đồ thống kê
+- Quản lý KPI được giao
+
+## 🔒 Bảo mật
+
+- ✅ **Password hashing**: BCrypt với salt
+- ✅ **JWT Authentication**: Secure Bearer token
+- ✅ **CORS**: Configured cho Angular frontend
+- ✅ **Input validation**: Frontend + Backend validation
+- ✅ **SQL injection protection**: Entity Framework parameterized queries
+- ✅ **Email validation**: Regex pattern matching
+- ✅ **Unique constraints**: Username và Email unique
+
+Backend API sẽ chạy tại:
+- HTTPS: `https://localhost:7297`
+- HTTP: `http://localhost:5197`
+- Swagger UI: `https://localhost:7297/swagger`
+
+### 3. Cài đặt Database
+
+## 🌟 Tính năng hiện tại
+
+### ✅ **Đã hoàn thành và hoạt động:**
+- 🔐 Hệ thống đăng ký/đăng nhập hoàn chỉnh
+- 👥 Quản lý user và role system
+- 🔑 JWT authentication với BCrypt hashing
+- 📧 Email validation đầy đủ
+- 📱 Responsive UI với Angular Material
+- 🛡️ CORS configuration cho security
+- 💾 Database integration với SQL Server VM
+- ⚡ Real-time form validation
+- 🎯 Auto role assignment (Phó Hiệu trưởng)
+
+### 🚧 **Đang phát triển:**
+- 📊 Dashboard KPI overview
+- 🏢 Quản lý phòng ban chi tiết
+- 📈 Báo cáo và thống kê
+- 🔐 Phân quyền nâng cao
+- 📋 CRUD operations cho KPI
+
+## 📱 Responsive Design
+
+Giao diện được tối ưu cho:
+- 💻 **Desktop**: Full features
+- 📱 **Mobile**: Touch-friendly
+- 📲 **Tablet**: Adaptive layout
 
 ## 🐛 Troubleshooting
 
-### Common Issues
+### Backend không khởi động
+```bash
+# Kill existing processes
+taskkill /F /IM "dotnet.exe"
 
-1. **Angular Material styling not working**
-   ```bash
-   # Ensure Material theme is imported
-   npm install @angular/material @angular/cdk @angular/animations
-   ```
+# Restart fresh
+cd src/app/BE
+dotnet run
+```
 
-2. **Build errors related to paths**
-   ```bash
-   # Clean and rebuild
-   rm -rf dist/
-   ng build
-   ```
+### Frontend compilation errors  
+```bash
+cd src/app/FE
+npm install
+npm start
+```
 
-3. **Development server not starting**
-   ```bash
-   # Clear npm cache and reinstall
-   npm cache clean --force
-   rm -rf node_modules/
-   npm install
-   ```
+### Database connection issues
+- ✅ Test connection string trong `appsettings.json`
 
-## 📄 License
+### Email validation không hoạt động
+- ✅ Đảm bảo email format: `name@domain.com`
+- ✅ Không để trống field email
+- ✅ Check unique constraint
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 👥 Team & Credits
 
-## 🏫 About Hanoi University of Civil Engineering
+**Developed for:** Trường Đại học Xây dựng Hà Nội  
+**Architecture:** Full-stack web application  
+**Development:** 2025
 
-This KPI management system is designed specifically for Hanoi University of Civil Engineering (HUCE) to track and manage institutional performance indicators according to Decision 1125/QD-DHXDHN.
+## 📄 Technical Stack
 
-## 📞 Support
+| Component | Technology | Version |
+|-----------|------------|---------|
+| Frontend | Angular | 16.0+ |
+| Backend | .NET | 8.0+ |
+| Database | SQL Server | 2019+ |
+| Auth | JWT + BCrypt | Latest |
+| UI | Angular Material | 16.0+ |
+| HTTP Client | Angular HTTP | 16.0+ |
 
-For support and questions, please contact:
-- **Email**: [your-email@huce.edu.vn]
-- **Phone**: [your-phone-number]
-- **Address**: Hanoi University of Civil Engineering, Vietnam
+## 📞 Support & Contact
+
+- **Repository**: [KienGee/KPIs](https://github.com/KienGee/KPIs)
+- **Issues**: GitHub Issues tab
+- **Email**: support@nuce.edu.vn
 
 ---
-**Built with ❤️ for Hanoi University of Civil Engineering**
+
+## 🎉 Project Status
+
+**✅ PRODUCTION READY cho Authentication Module**
+
+| Module | Status | Description |
+|---------|--------|-------------|
+| 🔐 Auth System | ✅ **LIVE** | Login/Register hoàn chỉnh |
+| 👥 User Management | ✅ **LIVE** | CRUD users + roles |
+| 📊 KPI Dashboard | 🚧 **DEVELOPMENT** | Đang xây dựng |
+| 📈 Reports | 🚧 **PLANNING** | Sắp triển khai |
+
+**Phiên bản hiện tại**: `v1.0.0-auth`  
+**Cập nhật cuối**: 25/08/2025  
+**Trạng thái hệ thống**: 🟢 **ONLINE & STABLE**
+
+---
+
+*🏗️ Được phát triển với ❤️ cho Trường Đại học Xây dựng Hà Nội*  
+*🚀 Angular 16 + .NET 8 + SQL Server*
+├── src/
+│   ├── app/
+│   │   ├── BE/                    # Backend .NET API
+│   │   │   ├── Controllers/       # API Controllers
+│   │   │   ├── Data/             # Entity Framework DbContext
+│   │   │   ├── Models/           # Data Models & DTOs
+│   │   │   ├── Services/         # Business Logic Services
+│   │   │   ├── Properties/       # Launch Settings
+│   │   │   ├── appsettings.json  # Configuration
+│   │   │   ├── Program.cs        # API Startup
+│   │   │   └── KpiApi.csproj     # Project File
+│   │   ├── FE/                   # Frontend Angular
+│   │   │   ├── auth/             # Authentication Module
+│   │   │   ├── dashboard/        # Dashboard Module
+│   │   │   └── nginx.conf        # Nginx Configuration
+│   │   ├── shared/               # Shared Services
+│   │   │   └── services/         # Angular Services
+│   │   └── DB/                   # Legacy DB files (không dùng)
+│   ├── environments/             # Angular Environments
+│   └── assets/                   # Static Assets
+├── package.json                  # Angular Dependencies
+└── README.md                     # This file
+```
+
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/login` - Đăng nhập
+- `POST /api/auth/register` - Đăng ký người dùng
+- `GET /api/auth/user/{id}` - Lấy thông tin người dùng
+
+### KPI Management
+- `GET /api/kpi` - Lấy danh sách KPI
+- `POST /api/kpi` - Tạo KPI mới
+- `PUT /api/kpi/{id}` - Cập nhật KPI
+- `DELETE /api/kpi/{id}` - Xóa KPI
+- `GET /api/kpi/assigned` - Lấy KPI được phân công
+- `GET /api/kpi/assigned/user/{userId}` - Lấy KPI của người dùng
+
+### Department Management
+- `GET /api/department` - Lấy danh sách phòng ban
+- `POST /api/department` - Tạo phòng ban mới
+- `PUT /api/department/{id}` - Cập nhật phòng ban
+- `DELETE /api/department/{id}` - Xóa phòng ban
+
+## Xử lý sự cố
+
+### 1. Lỗi kết nối Database
+- Kiểm tra SQL Server service đang chạy
+- Xác nhận connection string đúng
+- Đảm bảo database đã được tạo
+
+### 2. Lỗi CORS khi gọi API
+- Kiểm tra CORS policy trong `Program.cs`
+- Đảm bảo Angular dev server chạy trên port 4200
+
+### 3. Lỗi SSL Certificate
+- Thêm `TrustServerCertificate=True` vào connection string
+- Hoặc cài đặt dev certificate: `dotnet dev-certs https --trust`
+
+### 4. Lỗi JWT Token
+- Kiểm tra JWT settings trong `appsettings.json`
+- Đảm bảo secret key đủ dài (ít nhất 256 bits)
+
+
+### Debugging
+- Frontend: Sử dụng Chrome DevTools
+- Backend: Sử dụng Visual Studio hoặc VS Code với C# extension
+
+## Triển khai Production
+
+1. Build Angular app: `ng build --prod`
+2. Publish .NET API: `dotnet publish -c Release`
+3. Cấu hình Nginx reverse proxy
+4. Cài đặt SSL certificate
+5. Cấu hình connection string cho production database
+
+## Liên hệ
+
+Nếu có vấn đề về kỹ thuật, vui lòng tạo issue hoặc liên hệ team phát triển.

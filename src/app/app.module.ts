@@ -6,9 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './auth/login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { UnitKpiViewComponent } from './unit-kpi-view/unit-kpi-view.component';
+import { LoginComponent } from './FE/auth/login/login.component';
+import { DashboardComponent } from './FE/dashboard/dashboard.component';
+import { UnitKpiViewComponent } from './FE/dashboard/unit-kpi-view/unit-kpi-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Angular Material imports
