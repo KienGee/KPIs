@@ -1,13 +1,13 @@
 # KPI Management System 📊
 
-Hệ thống quản lý KPI cho Trường Đại học Xây dựng Hà Nội - Hanoi University of Civil Engineering
+Hệ thống quản lý KPI cua PHO Hieu Truong cho Trường Đại học Xây dựng Hà Nội - Hanoi University of Civil Engineering
 
 ## 🎯 Tổng quan
 
 Ứng dụng web quản lý chỉ số hiệu suất (KPI) được xây dựng với:
 - **Backend**: .NET 8 Web API
 - **Frontend**: Angular 16
-- **Database**: SQL Server (VM: 192.168.1.254)
+- **Database**: SQL Server 
 - **Authentication**: JWT Bearer Token + BCrypt
 - **UI Framework**: Angular Material
 
@@ -35,7 +35,7 @@ KPIs/
 ### Yêu cầu hệ thống
 - ✅ .NET 8 SDK
 - ✅ Node.js 16.20.2+
-- ✅ SQL Server (VM IP: 192.168.1.254)
+- ✅ SQL Server 
 - ✅ Angular CLI 16
 
 ### 1. Backend (.NET API)
@@ -83,7 +83,7 @@ npm start
    - **Mật khẩu**: Bắt buộc
    - **Họ và tên**: Bắt buộc
    - **Email**: Bắt buộc, đúng định dạng `name@domain.com`
-4. ✅ Hệ thống tự động gán role **"Phó Hiệu trưởng"** (role_id = 2)
+4. ✅ Hệ thống tự động gán role **"Phó Hiệu trưởng"** 
 
 ### ✅ Đăng nhập
 - Sử dụng username/password đã đăng ký
@@ -240,7 +240,7 @@ npm start
 
 ---
 
-*🏗️ Được phát triển với ❤️ cho Trường Đại học Xây dựng Hà Nội*  
+
 *🚀 Angular 16 + .NET 8 + SQL Server*
 ├── src/
 │   ├── app/
