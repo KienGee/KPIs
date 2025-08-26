@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/services/auth.service';
 
@@ -10,6 +10,8 @@ import { AuthService } from '../auth/services/auth.service';
 export class DashboardComponent implements OnInit {
   sidebarCollapsed = false;
   currentPage = 'Tổng quan';
+  showUserDropdown = false;
+  currentUser: any = null;
   
   pieChartData = { 
     labels: ['Chức năng', 'Mục tiêu', 'Tuân thủ'], 
@@ -22,12 +24,34 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Mock data - không cần API call
-    console.log('Dashboard loaded with mock data');
+    // Lấy thông tin người dùng từ AuthService
+    this.currentUser = this.authService.getCurrentUser();
+    console.log('Dashboard loaded with user:', this.currentUser);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const userInfo = target.closest('.user-info');
+    if (!userInfo) {
+      this.showUserDropdown = false;
+    }
   }
 
   toggleSidebar() {
     this.sidebarCollapsed = !this.sidebarCollapsed;
+  }
+
+  toggleUserDropdown() {
+    this.showUserDropdown = !this.showUserDropdown;
+  }
+
+  closeUserDropdown() {
+    this.showUserDropdown = false;
+  }
+
+  getUserDisplayName(): string {
+    return this.currentUser?.fullName || this.currentUser?.username || 'Người dùng';
   }
 
   navigateTo(page: string) {

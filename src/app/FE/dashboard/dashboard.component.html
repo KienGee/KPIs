@@ -10,10 +10,38 @@
     </div>
     <div class="header-right">
       <div class="user-info">
-        <div class="user-avatar">
+        <div class="user-avatar" (click)="toggleUserDropdown()">
           <i class="user-icon">👤</i>
         </div>
-        <button class="logout-btn" (click)="logout()">Đăng xuất</button>
+        
+        <!-- User Dropdown Menu -->
+        <div class="user-dropdown" *ngIf="showUserDropdown" (click)="$event.stopPropagation()">
+          <div class="user-profile">
+            <div class="profile-avatar">
+              <i class="profile-icon">👤</i>
+            </div>
+            <div class="profile-info">
+              <h4 class="profile-name">{{ getUserDisplayName() }}</h4>
+              <p class="profile-email">{{ currentUser?.email || currentUser?.username }}</p>
+              <p class="profile-role">{{ currentUser?.role || 'Người dùng' }}</p>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="dropdown-actions">
+            <button class="dropdown-item" (click)="navigateTo('Cài đặt'); closeUserDropdown()">
+              <i class="item-icon">⚙️</i>
+              Cài đặt tài khoản
+            </button>
+            <button class="dropdown-item logout-item" (click)="logout()">
+              <i class="item-icon">🚪</i>
+              Đăng xuất
+            </button>
+          </div>
+        </div>
+        
+        <button class="logout-btn-simple" (click)="logout()" title="Đăng xuất">
+          🚪
+        </button>
       </div>
     </div>
   </header>
@@ -69,7 +97,7 @@
             </div>
           </div>
           
-          <h2 class="welcome-title">Xin chào</h2>
+          <h2 class="welcome-title">Xin chào, {{ getUserDisplayName() }}</h2>
           
           <p class="welcome-message">Chào mừng bạn đến với hệ thống KPI của Trường Đại học Xây dựng</p>
         </div>

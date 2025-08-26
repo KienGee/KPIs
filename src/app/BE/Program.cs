@@ -21,7 +21,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(
+                "http://localhost:4200", 
+                "https://localhost:4200",
+                "http://localhost:5197",
+                "https://localhost:7297"
+              )
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -74,8 +79,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-// app.UseHttpsRedirection(); // Temporarily disabled for testing
+else
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("AllowAngularApp");
 
