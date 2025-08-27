@@ -95,7 +95,7 @@ namespace KpiApi.Data
             // KpiEvaluations
             modelBuilder.Entity<KpiEvaluation>()
                 .HasOne(k => k.AssignedKpi)
-                .WithMany()
+                .WithMany(ak => ak.KpiEvaluations)
                 .HasForeignKey(k => k.AssignedKpiId)
                 .OnDelete(DeleteBehavior.Cascade);
 

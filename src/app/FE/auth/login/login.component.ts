@@ -42,6 +42,13 @@ export class LoginComponent implements OnInit {
       // For now, just stay on login page since dashboard doesn't exist yet
       console.log('User already authenticated');
     }
+
+    // Clear error message when user starts typing
+    this.loginForm.valueChanges.subscribe(() => {
+      if (this.errorMessage) {
+        this.errorMessage = '';
+      }
+    });
   }
 
   onSubmit(): void {
@@ -66,7 +73,18 @@ export class LoginComponent implements OnInit {
         },
         error: (error: any) => {
           this.submitting = false;
-          this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+          console.error('Login error:', error);
+          
+          // Handle specific error messages
+          if (error.status === 401) {
+            this.errorMessage = error.error?.message || 'Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng thử lại.';
+          } else if (error.status === 500) {
+            this.errorMessage = error.error?.message || 'Lỗi hệ thống. Vui lòng thử lại sau.';
+          } else if (error.status === 0) {
+            this.errorMessage = 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.';
+          } else {
+            this.errorMessage = error.error?.message || 'Đăng nhập thất bại. Vui lòng thử lại.';
+          }
         }
       });
     }

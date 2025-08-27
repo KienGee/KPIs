@@ -19,6 +19,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
+import { AssignedKpiViewComponent } from './FE/dashboard/assigned-kpi-view/assigned-kpi-view.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { MatSortModule } from '@angular/material/sort';
     LoginComponent,
     DashboardComponent,
     UnitKpiViewComponent,
+    AssignedKpiViewComponent,
   ],
   imports: [
     BrowserModule,

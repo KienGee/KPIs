@@ -54,6 +54,22 @@ export class DashboardComponent implements OnInit {
     return this.currentUser?.fullName || this.currentUser?.username || 'Người dùng';
   }
 
+  isPhoHieuTruong(): boolean {
+    console.log('Current user in isPhoHieuTruong:', this.currentUser);
+    console.log('Current user roles:', this.currentUser?.roles);
+    
+    // Temporarily return true for testing
+    const result = true; // this.currentUser?.roles && this.currentUser.roles.includes('Phó Hiệu trưởng');
+    console.log('isPhoHieuTruong result:', result);
+    
+    return result;
+  }
+
+  navigateToMyKpis(): void {
+    this.currentPage = 'KPI của tôi';
+    console.log('Navigating to KPI của tôi within dashboard');
+  }
+
   navigateTo(page: string) {
     this.currentPage = page;
     console.log('Navigating to:', page);

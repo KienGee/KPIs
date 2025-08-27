@@ -6,12 +6,19 @@ namespace KpiApi.Models
     public class AssignedKpi
     {
         [Key]
+        [Column("assigned_kpi_id")]
         public int AssignedKpiId { get; set; }
+        [Column("kpi_id")]
         public int KpiId { get; set; }
+        [Column("period_id")]
         public int PeriodId { get; set; }
+        [Column("assignee_user_id")]
         public int? AssigneeUserId { get; set; }
+        [Column("assignee_department_id")]
         public int? AssigneeDepartmentId { get; set; }
-        public float? TargetValue { get; set; }
+        [Column("target_value")]
+        public double? TargetValue { get; set; }
+        [Column("weight_percent")]
         public int? WeightPercent { get; set; }
 
         // Navigation properties
@@ -19,15 +26,19 @@ namespace KpiApi.Models
         public virtual EvaluationPeriod Period { get; set; } = null!;
         public virtual User? AssigneeUser { get; set; }
         public virtual Department? AssigneeDepartment { get; set; }
+        public virtual ICollection<KpiEvaluation> KpiEvaluations { get; set; } = new List<KpiEvaluation>();
     }
 
     public class Department
     {
         [Key]
+        [Column("department_id")]
         public int DepartmentId { get; set; }
         [Required]
         [StringLength(150)]
+        [Column("department_name")]
         public string DepartmentName { get; set; } = string.Empty;
+        [Column("parent_department_id")]
         public int? ParentDepartmentId { get; set; }
 
         // Navigation properties
@@ -41,11 +52,15 @@ namespace KpiApi.Models
     public class EvaluationAttachment
     {
         [Key]
+        [Column("attachment_id")]
         public int AttachmentId { get; set; }
+        [Column("evaluation_id")]
         public int EvaluationId { get; set; }
         [StringLength(255)]
+        [Column("file_name")]
         public string? FileName { get; set; }
         [StringLength(255)]
+        [Column("file_path")]
         public string? FilePath { get; set; }
 
         public virtual KpiEvaluation Evaluation { get; set; } = null!;
@@ -54,13 +69,17 @@ namespace KpiApi.Models
     public class EvaluationPeriod
     {
         [Key]
+        [Column("period_id")]
         public int PeriodId { get; set; }
         [Required]
         [StringLength(100)]
+        [Column("period_name")]
         public string PeriodName { get; set; } = string.Empty;
         [Required]
+        [Column("start_date")]
         public DateTime StartDate { get; set; }
         [Required]
+        [Column("end_date")]
         public DateTime EndDate { get; set; }
 
         public virtual ICollection<AssignedKpi> AssignedKpis { get; set; } = new List<AssignedKpi>();
@@ -70,14 +89,21 @@ namespace KpiApi.Models
     public class FinalResult
     {
         [Key]
+        [Column("result_id")]
         public int ResultId { get; set; }
+        [Column("period_id")]
         public int PeriodId { get; set; }
+        [Column("user_id")]
         public int? UserId { get; set; }
+        [Column("department_id")]
         public int? DepartmentId { get; set; }
-        public float? TotalKpiScore { get; set; }
+        [Column("total_kpi_score")]
+        public double? TotalKpiScore { get; set; }
         [StringLength(50)]
+        [Column("completion_level")]
         public string? CompletionLevel { get; set; }
         [StringLength(5)]
+        [Column("final_rank")]
         public string? FinalRank { get; set; }
 
         public virtual EvaluationPeriod Period { get; set; } = null!;
@@ -88,14 +114,22 @@ namespace KpiApi.Models
     public class KpiEvaluation
     {
         [Key]
+        [Column("evaluation_id")]
         public int EvaluationId { get; set; }
+        [Column("assigned_kpi_id")]
         public int AssignedKpiId { get; set; }
-        public float? SelfAssessedScore { get; set; }
+        [Column("self_assessed_score")]
+        public double? SelfAssessedScore { get; set; }
+        [Column("self_comment")]
         public string? SelfComment { get; set; }
-        public float? ManagerAssessedScore { get; set; }
+        [Column("manager_assessed_score")]
+        public double? ManagerAssessedScore { get; set; }
+        [Column("manager_comment")]
         public string? ManagerComment { get; set; }
-        public float? FinalScore { get; set; }
+        [Column("final_score")]
+        public double? FinalScore { get; set; }
         [StringLength(30)]
+        [Column("status")]
         public string? Status { get; set; }
 
         public virtual AssignedKpi AssignedKpi { get; set; } = null!;
@@ -105,14 +139,19 @@ namespace KpiApi.Models
     public class Kpi
     {
         [Key]
+        [Column("kpi_id")]
         public int KpiId { get; set; }
         [Required]
         [StringLength(255)]
+        [Column("kpi_name")]
         public string KpiName { get; set; } = string.Empty;
+        [Column("description")]
         public string? Description { get; set; }
         [StringLength(20)]
+        [Column("kpi_type")]
         public string? KpiType { get; set; }
         [StringLength(50)]
+        [Column("measurement_unit")]
         public string? MeasurementUnit { get; set; }
 
         public virtual ICollection<AssignedKpi> AssignedKpis { get; set; } = new List<AssignedKpi>();

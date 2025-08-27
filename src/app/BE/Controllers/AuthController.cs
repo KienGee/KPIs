@@ -23,14 +23,14 @@ namespace KpiApi.Controllers
                 var response = await _authService.LoginAsync(request);
                 if (response == null)
                 {
-                    return Unauthorized("Invalid username or password");
+                    return Unauthorized(new { message = "Tên đăng nhập hoặc mật khẩu không chính xác. Vui lòng thử lại." });
                 }
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Login error: {ex.Message}");
+                return StatusCode(500, new { message = $"Lỗi hệ thống: {ex.Message}" });
             }
         }
 

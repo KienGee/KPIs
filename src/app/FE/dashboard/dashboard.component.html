@@ -57,6 +57,12 @@
             <span class="nav-text">Tổng quan</span>
           </a>
         </li>
+        <li class="nav-item" [class.active]="currentPage === 'KPI của tôi'" *ngIf="isPhoHieuTruong()">
+          <a href="#" class="nav-link" (click)="navigateToMyKpis(); $event.preventDefault()">
+            <i class="nav-icon">📋</i>
+            <span class="nav-text">KPI của tôi</span>
+          </a>
+        </li>
         <li class="nav-item" [class.active]="currentPage === 'KPI Đơn vị'">
           <a href="#" class="nav-link" (click)="navigateTo('KPI Đơn vị'); $event.preventDefault()">
             <i class="nav-icon">📊</i>
@@ -121,6 +127,11 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- KPI của tôi Page -->
+        <div class="page-content" *ngIf="currentPage === 'KPI của tôi'">
+          <app-assigned-kpi-view></app-assigned-kpi-view>
         </div>
 
         <!-- Cài đặt Page -->
