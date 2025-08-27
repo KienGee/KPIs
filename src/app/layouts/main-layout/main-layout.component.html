@@ -1,0 +1,69 @@
+<div class="dashboard-layout">
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-left">
+            <img src="/assets/images/LOGO_DHXD.png" alt="HUCE Logo" class="header-logo">
+            <div class="header-title">
+                <h1>TRƯỜNG ĐẠI HỌC XÂY DỰNG</h1>
+                <p>National University of Civil Engineering</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="user-icon">👤</i>
+                </div>
+                <button class="logout-btn">Đăng xuất</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-body">
+        <!-- Sidebar -->
+        <nav class="sidebar" [class.collapsed]="sidebarCollapsed">
+            <button class="menu-toggle" (click)="toggleSidebar()">☰ Menu</button>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a routerLink="/dashboard" class="nav-link">
+                        <i class="nav-icon">🏠</i>
+                        <span class="nav-text">Tổng quan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/kpis/create" class="nav-link">
+                        <i class="nav-icon">📊</i>
+                        <span class="nav-text">KPI Đơn vị</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/kpis/create" class="nav-link">
+                        <i class="nav-icon">📈</i>
+                        <span class="nav-text">Tạo KPIs</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon">⚙️</i>
+                        <span class="nav-text">Cài đặt</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">🏠 Trang chủ</span>
+                    <span class="breadcrumb-separator">▶</span>
+                    <!-- <span class="breadcrumb-item current">{{ currentPage }}</span> -->
+                </div>
+            </div>
+
+            <div class="content-area">
+                <!-- Tổng quan Page -->
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </div>
+</div>

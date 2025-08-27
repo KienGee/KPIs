@@ -19,6 +19,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
+import { CreateKpiComponent } from './create-kpi/create-kpi.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { MatSortModule } from '@angular/material/sort';
     LoginComponent,
     DashboardComponent,
     UnitKpiViewComponent,
+    CreateKpiComponent,
+    MainLayoutComponent,
+    AuthLayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,9 +46,12 @@ import { MatSortModule } from '@angular/material/sort';
     MatSelectModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatSortModule
+    MatSortModule,
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

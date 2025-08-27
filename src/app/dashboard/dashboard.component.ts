@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
 
   navigateTo(page: string) {
     this.currentPage = page;
-    console.log('Navigating to:', page);
+    console.log('Navigati ng to:', page);
     
     // Thêm logic chuyển hướng tùy theo page
     switch(page) {

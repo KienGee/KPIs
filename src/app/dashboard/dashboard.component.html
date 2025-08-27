@@ -1,6 +1,6 @@
 <div class="dashboard-layout">
   <!-- Header -->
-  <header class="dashboard-header">
+  <!-- <header class="dashboard-header">
     <div class="header-left">
       <img src="/assets/images/LOGO_DHXD.png" alt="HUCE Logo" class="header-logo">
       <div class="header-title">
@@ -16,11 +16,11 @@
         <button class="logout-btn" (click)="logout()">Đăng xuất</button>
       </div>
     </div>
-  </header>
+  </header> -->
 
   <div class="dashboard-body">
     <!-- Sidebar -->
-    <nav class="sidebar" [class.collapsed]="sidebarCollapsed">
+    <!-- <nav class="sidebar" [class.collapsed]="sidebarCollapsed">
       <button class="menu-toggle" (click)="toggleSidebar()">☰ Menu</button>
       <ul class="nav-menu">
         <li class="nav-item" [class.active]="currentPage === 'Tổng quan'">
@@ -48,17 +48,17 @@
           </a>
         </li>
       </ul>
-    </nav>
+    </nav> -->
 
     <!-- Main Content -->
     <main class="main-content">
-      <div class="page-header">
+      <!-- <div class="page-header">
         <div class="breadcrumb">
           <span class="breadcrumb-item">🏠 Trang chủ</span>
           <span class="breadcrumb-separator">▶</span>
           <span class="breadcrumb-item current">{{ currentPage }}</span>
         </div>
-      </div>
+      </div> -->
 
       <div class="content-area">
         <!-- Tổng quan Page -->
@@ -68,19 +68,19 @@
               <i class="avatar-icon">👤</i>
             </div>
           </div>
-          
+
           <h2 class="welcome-title">Xin chào</h2>
-          
+
           <p class="welcome-message">Chào mừng bạn đến với hệ thống KPI của Trường Đại học Xây dựng</p>
         </div>
 
         <!-- KPI Đơn vị Page -->
-        <div class="page-content" *ngIf="currentPage === 'KPI Đơn vị'">
+        <!-- <div class="page-content" *ngIf="currentPage === 'KPI Đơn vị'">
           <app-unit-kpi-view></app-unit-kpi-view>
-        </div>
+        </div> -->
 
         <!-- Tạo KPIs Page -->
-        <div class="page-content" *ngIf="currentPage === 'Tạo KPIs'">
+        <!-- <div class="page-content" *ngIf="currentPage === 'Tạo KPIs'">
           <div class="info-card">
             <h3 class="card-title">📈 Tạo KPIs</h3>
             <div class="info-content">
@@ -93,10 +93,10 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Cài đặt Page -->
-        <div class="page-content" *ngIf="currentPage === 'Cài đặt'">
+        <!-- <div class="page-content" *ngIf="currentPage === 'Cài đặt'">
           <div class="info-card">
             <h3 class="card-title">⚙️ Cài đặt Hệ thống</h3>
             <div class="info-content">
@@ -110,7 +110,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </main>
   </div>
