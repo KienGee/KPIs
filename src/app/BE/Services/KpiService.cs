@@ -53,6 +53,7 @@ namespace KpiApi.Services
             existingKpi.Description = kpi.Description;
             existingKpi.KpiType = kpi.KpiType;
             existingKpi.MeasurementUnit = kpi.MeasurementUnit;
+            existingKpi.UpdatedDate = DateTime.Now;
 
             await _context.SaveChangesAsync();
             return existingKpi;

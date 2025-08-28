@@ -58,8 +58,8 @@ export class DashboardComponent implements OnInit {
     console.log('Current user in isPhoHieuTruong:', this.currentUser);
     console.log('Current user roles:', this.currentUser?.roles);
     
-    // Temporarily return true for testing
-    const result = true; // this.currentUser?.roles && this.currentUser.roles.includes('Phó Hiệu trưởng');
+    
+    const result = true; 
     console.log('isPhoHieuTruong result:', result);
     
     return result;

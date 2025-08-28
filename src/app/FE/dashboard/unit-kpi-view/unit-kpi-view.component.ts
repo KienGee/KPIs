@@ -1,8 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { KpiService, Kpi } from '../../../shared/services/kpi.service';
 import { AuthService } from '../../auth/services/auth.service';
+import { UpdateKpiDto, KpiResponseDto } from '../../auth/models/kpi.model';
+import { EditKpiDialogComponent } from './edit-kpi-dialog.component';
 
 @Component({
   selector: 'app-unit-kpi-view',
@@ -26,15 +29,16 @@ export class UnitKpiViewComponent implements OnInit {
   targetDataSource = new MatTableDataSource<any>([]);
   complianceDataSource = new MatTableDataSource<any>([]);
 
-  // Column definitions for each table - bỏ cột STT, thêm measurement_unit
-  functionColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate'];
-  targetColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate'];
-  complianceColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate'];
+  // Column definitions for each table 
+  functionColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate', 'updatedDate', 'actions'];
+  targetColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate', 'updatedDate', 'actions'];
+  complianceColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate', 'updatedDate', 'actions'];
 
   constructor(
     private kpiService: KpiService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -126,10 +130,13 @@ export class UnitKpiViewComponent implements OnInit {
       console.log(`KPI ${index + 1}: ${kpi.kpiName} - Type: "${kpi.kpiType}"`);
       
       const tableRow = {
+        kpiId: kpi.kpiId,
         indicator: kpi.kpiName,
-        formula: kpi.description || 'Chưa có mô tả', // Use description as formula/method
+        formula: kpi.description || 'Chưa có mô tả', 
         measurementUnit: kpi.measurementUnit || 'Chưa xác định',
-        createdDate: kpi.createdDate ? new Date(kpi.createdDate).toLocaleDateString('vi-VN') : 'N/A'
+        createdDate: kpi.createdDate ? new Date(kpi.createdDate).toLocaleDateString('vi-VN') : 'N/A',
+        updatedDate: kpi.updatedDate ? new Date(kpi.updatedDate).toLocaleDateString('vi-VN') : null,
+        originalKpi: kpi // Store original KPI data for editing
       };
 
       switch (kpi.kpiType?.toLowerCase()) {
@@ -170,5 +177,61 @@ export class UnitKpiViewComponent implements OnInit {
 
   navigateToCreateKpi(): void {
     this.navigateToCreate.emit();
+  }
+
+  // Edit KPI functionality
+  editKpi(rowData: any): void {
+    const kpi = rowData.originalKpi;
+    
+    const dialogRef = this.dialog.open(EditKpiDialogComponent, {
+      width: '500px',
+      disableClose: true,
+      data: { kpi: kpi }
+    });
+
+    dialogRef.afterClosed().subscribe((result: KpiResponseDto | undefined) => {
+      if (result) {
+        // Update was successful, update the KPI in local array
+        const index = this.kpis.findIndex(k => k.kpiId === kpi.kpiId);
+        if (index !== -1) {
+          this.kpis[index] = {
+            ...this.kpis[index],
+            kpiName: result.kpiName,
+            description: result.description,
+            kpiType: result.kpiType,
+            measurementUnit: result.measurementUnit,
+            updatedDate: result.updatedDate
+          };
+        }
+        
+        // Reorganize the data
+        this.organizeKpisByType();
+        
+        // Show success message
+        alert('Cập nhật KPI thành công!');
+      }
+    });
+  }
+
+  // Delete KPI functionality
+  deleteKpi(rowData: any): void {
+    const kpi = rowData.originalKpi;
+    if (confirm(`Bạn có chắc chắn muốn xóa KPI "${kpi.kpiName}"? Hành động này không thể hoàn tác.`)) {
+      this.kpiService.deleteKpi(kpi.kpiId).subscribe({
+        next: () => {
+          // Remove from local array
+          this.kpis = this.kpis.filter(k => k.kpiId !== kpi.kpiId);
+          
+          // Reorganize the data
+          this.organizeKpisByType();
+          
+          alert('Xóa KPI thành công!');
+        },
+        error: (error) => {
+          console.error('Error deleting KPI:', error);
+          alert('Có lỗi xảy ra khi xóa KPI. Vui lòng thử lại.');
+        }
+      });
+    }
   }
 }

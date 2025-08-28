@@ -89,6 +89,13 @@
               {{ kpi.evaluation ? 'Sửa' : 'Đánh giá' }}
             </button>
             <button 
+              class="btn btn-secondary btn-sm ml-2"
+              (click)="openEditSuggestionModal(kpi)"
+              title="Đề xuất chỉnh sửa thông tin KPI">
+              <i class="fas fa-lightbulb"></i>
+              Đề xuất
+            </button>
+            <button 
               *ngIf="kpi.evaluation?.attachments && (kpi.evaluation?.attachments?.length || 0) > 0"
               class="btn btn-secondary btn-sm ml-2"
               title="Xem minh chứng">
@@ -173,6 +180,94 @@
       <button class="btn btn-primary" (click)="submitEvaluation()">
         <i class="fas fa-save"></i>
         Lưu đánh giá
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Suggestion Modal -->
+<div *ngIf="showEditSuggestionModal" class="modal-overlay" (click)="closeEditSuggestionModal()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>
+        <i class="fas fa-lightbulb"></i>
+        Đề xuất chỉnh sửa KPI
+      </h3>
+      <button class="close-btn" (click)="closeEditSuggestionModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="selectedKpi" class="kpi-info">
+        <h4>{{ selectedKpi.kpiName }}</h4>
+        <p class="kpi-desc">{{ selectedKpi.description }}</p>
+        <div class="kpi-details">
+          <div class="detail-item">
+            <strong>Đơn vị đo hiện tại:</strong> {{ selectedKpi.measurementUnit || 'N/A' }}
+          </div>
+        </div>
+      </div>
+
+      <form class="edit-suggestion-form">
+        <div class="form-group">
+          <label for="suggestedKpiName">Tên KPI đề xuất *</label>
+          <input
+            id="suggestedKpiName"
+            type="text"
+            [(ngModel)]="editSuggestionForm.kpiName"
+            name="suggestedKpiName"
+            class="form-input"
+            placeholder="Nhập tên KPI mới..."
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="suggestedDescription">Mô tả đề xuất *</label>
+          <textarea
+            id="suggestedDescription"
+            [(ngModel)]="editSuggestionForm.description"
+            name="suggestedDescription"
+            class="form-textarea"
+            rows="4"
+            placeholder="Nhập mô tả mới cho KPI..."
+            required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="suggestedMeasurementUnit">Đơn vị đo đề xuất *</label>
+          <input
+            id="suggestedMeasurementUnit"
+            type="text"
+            [(ngModel)]="editSuggestionForm.measurementUnit"
+            name="suggestedMeasurementUnit"
+            class="form-input"
+            placeholder="Nhập đơn vị đo mới..."
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="suggestionReason">Lý do đề xuất chỉnh sửa *</label>
+          <textarea
+            id="suggestionReason"
+            [(ngModel)]="editSuggestionForm.reason"
+            name="suggestionReason"
+            class="form-textarea"
+            rows="3"
+            placeholder="Vui lòng giải thích lý do bạn muốn thay đổi thông tin KPI này..."
+            required></textarea>
+          <small class="form-help">Hãy mô tả rõ lý do tại sao bạn nghĩ những thay đổi này sẽ cải thiện KPI.</small>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeEditSuggestionModal()">
+        Hủy
+      </button>
+      <button class="btn btn-primary" (click)="submitEditSuggestion()">
+        <i class="fas fa-paper-plane"></i>
+        Gửi đề xuất
       </button>
     </div>
   </div>

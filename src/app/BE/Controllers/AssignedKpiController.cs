@@ -9,7 +9,7 @@ namespace KpiApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize] // Re-enabled to get user info from JWT token
+    [Authorize] 
     public class AssignedKpiController : ControllerBase
     {
         private readonly KpiDbContext _context;

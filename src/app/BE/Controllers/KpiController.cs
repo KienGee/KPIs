@@ -75,22 +75,45 @@ namespace KpiApi.Controllers
                 kpiName = createdKpi.KpiName,
                 description = createdKpi.Description ?? string.Empty,
                 kpiType = createdKpi.KpiType ?? string.Empty,
-                measurementUnit = createdKpi.MeasurementUnit ?? string.Empty
+                measurementUnit = createdKpi.MeasurementUnit ?? string.Empty,
+                createdDate = createdKpi.CreatedDate,
+                updatedDate = createdKpi.UpdatedDate
             };
 
             return Ok(responseDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Kpi>> UpdateKpi(int id, [FromBody] Kpi kpi)
+        public async Task<ActionResult<KpiResponseDto>> UpdateKpi(int id, [FromBody] UpdateKpiDto updateKpiDto)
         {
+            // Convert DTO to model
+            var kpi = new Kpi
+            {
+                KpiName = updateKpiDto.kpiName,
+                Description = updateKpiDto.description,
+                KpiType = updateKpiDto.kpiType,
+                MeasurementUnit = updateKpiDto.measurementUnit
+            };
+
             var updatedKpi = await _kpiService.UpdateKpiAsync(id, kpi);
             if (updatedKpi == null)
             {
                 return NotFound();
             }
 
-            return Ok(updatedKpi);
+            // Convert back to response DTO
+            var responseDto = new KpiResponseDto
+            {
+                kpiId = updatedKpi.KpiId,
+                kpiName = updatedKpi.KpiName,
+                description = updatedKpi.Description ?? string.Empty,
+                kpiType = updatedKpi.KpiType ?? string.Empty,
+                measurementUnit = updatedKpi.MeasurementUnit ?? string.Empty,
+                createdDate = updatedKpi.CreatedDate,
+                updatedDate = updatedKpi.UpdatedDate
+            };
+
+            return Ok(responseDto);
         }
 
         [HttpDelete("{id}")]

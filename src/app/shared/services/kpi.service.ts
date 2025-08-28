@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { KpiResponseDto, UpdateKpiDto } from '../../../app/FE/auth/models/kpi.model';
 
 export interface Kpi {
   kpiId: number;
@@ -10,6 +11,7 @@ export interface Kpi {
   measurementUnit?: string;
   createdByUserId?: number;
   createdDate?: string;
+  updatedDate?: string;
 }
 
 export interface AssignedKpi {
@@ -70,8 +72,8 @@ export class KpiService {
     });
   }
 
-  updateKpi(id: number, kpi: Kpi): Observable<Kpi> {
-    return this.http.put<Kpi>(`${this.apiUrl}/kpi/${id}`, kpi, {
+  updateKpi(id: number, updateKpiDto: UpdateKpiDto): Observable<KpiResponseDto> {
+    return this.http.put<KpiResponseDto>(`${this.apiUrl}/kpi/${id}`, updateKpiDto, {
       headers: this.getAuthHeaders()
     });
   }

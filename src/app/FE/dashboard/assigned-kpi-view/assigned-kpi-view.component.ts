@@ -22,6 +22,15 @@ export class AssignedKpiViewComponent implements OnInit {
     selfComment: ''
   };
 
+  // Modal for edit suggestion
+  showEditSuggestionModal = false;
+  editSuggestionForm = {
+    kpiName: '',
+    description: '',
+    measurementUnit: '',
+    reason: ''
+  };
+
   constructor(
     private assignedKpiService: AssignedKpiService,
     private authService: AuthService
@@ -116,6 +125,73 @@ export class AssignedKpiViewComponent implements OnInit {
         alert(error.error?.message || 'Có lỗi xảy ra khi gửi đánh giá.');
       }
     });
+  }
+
+  // Edit suggestion methods
+  openEditSuggestionModal(kpi: AssignedKpiDetail): void {
+    this.selectedKpi = kpi;
+    this.editSuggestionForm = {
+      kpiName: kpi.kpiName,
+      description: kpi.description || '',
+      measurementUnit: kpi.measurementUnit || '',
+      reason: ''
+    };
+    this.showEditSuggestionModal = true;
+  }
+
+  closeEditSuggestionModal(): void {
+    this.showEditSuggestionModal = false;
+    this.selectedKpi = null;
+    this.editSuggestionForm = {
+      kpiName: '',
+      description: '',
+      measurementUnit: '',
+      reason: ''
+    };
+  }
+
+  submitEditSuggestion(): void {
+    if (!this.selectedKpi) return;
+
+    // Kiểm tra xem có thay đổi gì không
+    if (this.editSuggestionForm.kpiName === this.selectedKpi.kpiName &&
+        this.editSuggestionForm.description === (this.selectedKpi.description || '') &&
+        this.editSuggestionForm.measurementUnit === (this.selectedKpi.measurementUnit || '')) {
+      alert('Vui lòng thực hiện ít nhất một thay đổi để đề xuất chỉnh sửa.');
+      return;
+    }
+
+    if (!this.editSuggestionForm.reason.trim()) {
+      alert('Vui lòng nhập lý do đề xuất chỉnh sửa.');
+      return;
+    }
+
+    // TODO: Implement API call to submit edit suggestion
+    // For now, just show a success message
+    const suggestionData = {
+      originalKpi: {
+        kpiId: this.selectedKpi.kpiId,
+        kpiName: this.selectedKpi.kpiName,
+        description: this.selectedKpi.description,
+        measurementUnit: this.selectedKpi.measurementUnit
+      },
+      suggestedChanges: {
+        kpiName: this.editSuggestionForm.kpiName,
+        description: this.editSuggestionForm.description,
+        measurementUnit: this.editSuggestionForm.measurementUnit
+      },
+      reason: this.editSuggestionForm.reason,
+      submittedBy: this.authService.getCurrentUser()?.userId,
+      submittedAt: new Date()
+    };
+
+    console.log('Edit suggestion data:', suggestionData);
+    
+    // Simulate API call
+    setTimeout(() => {
+      alert('Đề xuất chỉnh sửa đã được gửi thành công! Quản lý sẽ xem xét và phản hồi.');
+      this.closeEditSuggestionModal();
+    }, 500);
   }
 
   getStatusText(status?: string): string {

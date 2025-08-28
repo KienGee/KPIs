@@ -157,6 +157,8 @@ namespace KpiApi.Models
         public int? CreatedByUserId { get; set; }
         [Column("created_date")]
         public DateTime CreatedDate { get; set; } = DateTime.Now;
+        [Column("updated_date")]
+        public DateTime? UpdatedDate { get; set; }
 
         // Navigation properties
         public virtual User? CreatedByUser { get; set; }
@@ -270,6 +272,21 @@ namespace KpiApi.Models
         public string measurementUnit { get; set; } = string.Empty;
     }
 
+    public class UpdateKpiDto
+    {
+        [Required]
+        [StringLength(255)]
+        public string kpiName { get; set; } = string.Empty;
+        
+        public string description { get; set; } = string.Empty;
+        
+        [StringLength(20)]
+        public string kpiType { get; set; } = string.Empty;
+        
+        [StringLength(50)]
+        public string measurementUnit { get; set; } = string.Empty;
+    }
+
     public class KpiResponseDto
     {
         public int kpiId { get; set; }
@@ -277,5 +294,7 @@ namespace KpiApi.Models
         public string description { get; set; } = string.Empty;
         public string kpiType { get; set; } = string.Empty;
         public string measurementUnit { get; set; } = string.Empty;
+        public DateTime createdDate { get; set; }
+        public DateTime? updatedDate { get; set; }
     }
 }

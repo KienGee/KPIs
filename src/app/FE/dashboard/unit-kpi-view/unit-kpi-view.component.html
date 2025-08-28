@@ -66,6 +66,23 @@
                 <mat-header-cell *matHeaderCellDef class="large-header">Ngày tạo</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="large-cell">{{row.createdDate}}</mat-cell>
               </ng-container>
+              <ng-container matColumnDef="updatedDate">
+                <mat-header-cell *matHeaderCellDef class="large-header">Ngày cập nhật</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.updatedDate || 'Chưa cập nhật'}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef class="large-header">Thao tác</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">
+                  <div class="action-buttons">
+                    <button mat-icon-button color="primary" (click)="editKpi(row)" matTooltip="Chỉnh sửa">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteKpi(row)" matTooltip="Xóa">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </mat-cell>
+              </ng-container>
               <mat-header-row *matHeaderRowDef="functionColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: functionColumns;"></mat-row>
             </mat-table>
@@ -90,6 +107,23 @@
               <ng-container matColumnDef="createdDate">
                 <mat-header-cell *matHeaderCellDef class="large-header">Ngày tạo</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="large-cell">{{row.createdDate}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="updatedDate">
+                <mat-header-cell *matHeaderCellDef class="large-header">Ngày cập nhật</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.updatedDate || 'Chưa cập nhật'}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef class="large-header">Thao tác</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">
+                  <div class="action-buttons">
+                    <button mat-icon-button color="primary" (click)="editKpi(row)" matTooltip="Chỉnh sửa">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteKpi(row)" matTooltip="Xóa">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="targetColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: targetColumns;"></mat-row>
@@ -116,6 +150,23 @@
                 <mat-header-cell *matHeaderCellDef class="large-header">Ngày tạo</mat-header-cell>
                 <mat-cell *matCellDef="let row" class="large-cell">{{row.createdDate}}</mat-cell>
               </ng-container>
+              <ng-container matColumnDef="updatedDate">
+                <mat-header-cell *matHeaderCellDef class="large-header">Ngày cập nhật</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.updatedDate || 'Chưa cập nhật'}}</mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef class="large-header">Thao tác</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">
+                  <div class="action-buttons">
+                    <button mat-icon-button color="primary" (click)="editKpi(row)" matTooltip="Chỉnh sửa">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteKpi(row)" matTooltip="Xóa">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </mat-cell>
+              </ng-container>
               <mat-header-row *matHeaderRowDef="complianceColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: complianceColumns;"></mat-row>
             </mat-table>
@@ -125,9 +176,6 @@
       </div>
     </mat-card-content>
 
-    <div class="ai-insights" *ngIf="aiInsights">
-      <h3>🤖 Phân tích AI</h3>
-      <p>{{ aiInsights }}</p>
-    </div>
+    
   </mat-card>
 </div>

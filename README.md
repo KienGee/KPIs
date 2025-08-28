@@ -8,8 +8,19 @@ Hệ thống quản lý chỉ số hiệu suất (KPI) cho Trường Đại họ
 
 ### 🚀 Công nghệ sử dụng
 - **Backend**: ASP.NET Core 8.0 Web API
-- **Frontend**: Angular 16 + Angular Material 
-- **Database**: SQL Server với Entity Framework Core
+- **Frontend**: Angular 16 + Angular Mate### 🚧 **Planned Features (Roadmap):**
+- 📈 Advanced KPI analytics & reporting
+- 🔔 Notification system cho deadlines
+- 📎 File upload cho KPI attachments
+- 👥 Manager evaluation workflow
+- 📊 Dashboard charts & visualizations
+- 📤 Export functionality (PDF, Excel)
+- 🔍 Advanced search & filtering
+- 📱 Progressive Web App (PWA) features
+- ✉️ **NEW**: Email notifications cho edit suggestions
+- 👨‍💼 **NEW**: Manager approval workflow cho KPI changes
+- 📋 **NEW**: Edit suggestion history tracking
+- 🔄 **NEW**: Bulk KPI operations**Database**: SQL Server với Entity Framework Core
 - **Authentication**: JWT Bearer Token + BCrypt hashing
 - **UI Framework**: Angular Material + Custom CSS
 - **State Management**: RxJS Observables
@@ -176,10 +187,11 @@ Server=192.168.1.254,1433;Database=KPI_Management;User Id=sa;Password=1234;Trust
 - ✅ `Roles` - Hệ thống vai trò (5 roles)
 - ✅ `UserRoles` - Liên kết user-role (many-to-many)
 - ✅ `Departments` - Phòng ban/đơn vị
-- ✅ `Kpis` - Định nghĩa KPI (Create, Read, Update, Delete)
+- ✅ `Kpis` - Định nghĩa KPI (Create, Read, Update, Delete) với updated_date tracking
 - ✅ `AssignedKpis` - Phân công KPI cho người dùng
 - ✅ `KpiEvaluations` - Đánh giá KPI & self-assessment
 - ✅ `EvaluationPeriods` - Kỳ đánh giá KPI
+- ✅ **NEW**: `KpiEditSuggestions` - Bảng lưu trữ đề xuất chỉnh sửa KPI (planned)
 
 ## 🔐 Hệ thống xác thực
 
@@ -230,12 +242,14 @@ Server=192.168.1.254,1433;Database=KPI_Management;User Id=sa;Password=1234;Trust
 - ✅ `PUT /api/kpi/{id}` - Cập nhật KPI
 - ✅ `DELETE /api/kpi/{id}` - Xóa KPI
 - ✅ `GET /api/kpi/user/{userId}` - Lấy KPI do user tạo
+- ✅ **NEW**: Enhanced error handling và validation
 
 ### Assigned KPI APIs ✅
 - ✅ `GET /api/assignedkpi/my` - Lấy KPI được phân công cho user hiện tại
 - ✅ `GET /api/assignedkpi/my?periodId={id}` - Lấy KPI theo kỳ đánh giá
 - ✅ `POST /api/assignedkpi/evaluation` - Gửi đánh giá KPI
 - ✅ `GET /api/assignedkpi/periods` - Lấy danh sách kỳ đánh giá
+- ✅ **NEW**: `POST /api/assignedkpi/edit-suggestion` - Gửi đề xuất chỉnh sửa KPI
 
 ### Department APIs ✅
 - ✅ `GET /api/department` - Lấy danh sách phòng ban
@@ -262,6 +276,11 @@ Server=192.168.1.254,1433;Database=KPI_Management;User Id=sa;Password=1234;Trust
 - ✅ Hiển thị danh sách KPI do user tạo
 - ✅ Phân loại KPI theo type: Chức năng, Mục tiêu, Tuân thủ
 - ✅ Table view với Material Design
+- ✅ **NEW**: CRUD Operations - Create, Read, Update, Delete KPI
+- ✅ **NEW**: Advanced styling với gradient backgrounds và hover effects
+- ✅ **NEW**: Modal dialogs cho Edit và Delete confirmation
+- ✅ **NEW**: Real-time form validation và error handling
+- ✅ **NEW**: Responsive design với professional styling
 - ✅ Loading states và empty states
 - ✅ Button "Tạo KPI mới" navigation
 
@@ -275,7 +294,9 @@ Server=192.168.1.254,1433;Database=KPI_Management;User Id=sa;Password=1234;Trust
   - Trạng thái đánh giá với color-coded badges
 - ✅ Modal đánh giá KPI với form validation
 - ✅ Submit evaluation với self-assessment score & comments
+- ✅ **NEW**: Đề xuất chỉnh sửa KPI (Edit Suggestion) - Cho phép user đề xuất thay đổi KPI mà không cần quyền chỉnh sửa trực tiếp
 - ✅ Real-time data loading và error handling
+- ✅ **NEW**: Advanced UI với gradient styling và animations
 
 ### ✅ Tạo KPI mới (Create KPI)
 - ✅ Form tạo KPI với validation
@@ -315,10 +336,13 @@ Backend API sẽ chạy tại:
 #### 📊 KPI Management System
 - ✅ **Tạo KPI mới**: Form validation & backend integration
 - ✅ **Xem KPI đã tạo**: List view với phân loại theo type
+- ✅ **CRUD Operations**: Create, Read, Update, Delete KPI hoàn chỉnh
 - ✅ **Quản lý KPI được giao**: Comprehensive view với filtering
 - ✅ **Đánh giá KPI**: Self-assessment với scoring & comments
+- ✅ **Đề xuất chỉnh sửa**: Edit suggestion system cho collaborative KPI management
 - ✅ **Kỳ đánh giá**: Evaluation periods management
 - ✅ **Phân loại KPI**: 3 types - Chức năng, Mục tiêu, Tuân thủ
+- ✅ **Database tracking**: Added updated_date column for audit trail
 
 #### 🏢 Organization Management  
 - ✅ Department management (CRUD operations)
@@ -329,11 +353,16 @@ Backend API sẽ chạy tại:
 #### 🎨 User Interface & Experience
 - ✅ Responsive design (Desktop, Tablet, Mobile)
 - ✅ Angular Material components integration
+- ✅ **NEW**: Advanced CSS với gradient backgrounds và animations
+- ✅ **NEW**: Professional styling với hover effects và transitions
+- ✅ **NEW**: Enhanced modal dialogs với backdrop blur effects
+- ✅ **NEW**: Improved typography và color schemes
 - ✅ Loading states & error handling
 - ✅ Real-time form validation
 - ✅ Success/error notifications
 - ✅ Comprehensive data tables với sorting & filtering
 - ✅ Modal dialogs cho detailed interactions
+- ✅ **NEW**: Edit suggestion workflow với user-friendly forms
 
 #### �️ Security & Performance
 - ✅ CORS configuration cho Angular frontend
@@ -504,14 +533,16 @@ npm start
 | 📊 **KPI Creation** | ✅ **COMPLETE** | 100% | Create & manage personal KPIs |
 | 📋 **KPI Assignment** | ✅ **COMPLETE** | 100% | View assigned KPIs by period |
 | 🎯 **KPI Evaluation** | ✅ **COMPLETE** | 100% | Self-assessment & scoring |
+| ✏️ **KPI Edit Operations** | ✅ **COMPLETE** | 100% | **NEW**: Full CRUD with update/delete |
+| 💡 **Edit Suggestions** | ✅ **COMPLETE** | 95% | **NEW**: Propose KPI changes workflow |
 | 🏢 **Organization** | ✅ **COMPLETE** | 100% | Departments & role management |
-| 🎨 **User Interface** | ✅ **COMPLETE** | 100% | Responsive, Material Design |
+| 🎨 **User Interface** | ✅ **COMPLETE** | 100% | **ENHANCED**: Professional styling & animations |
 | 🛡️ **Security** | ✅ **COMPLETE** | 100% | CORS, JWT, Input validation |
 | 📈 **Reporting** | 🚧 **PLANNED** | 0% | Analytics & export features |
 | 🔔 **Notifications** | 🚧 **PLANNED** | 0% | Email & in-app notifications |
 
 ### Release Information
-- **Current Version**: `v2.0.0-stable`  
+- **Current Version**: `v2.1.0-stable` 
 - **Last Updated**: August 28, 2025  
 - **System Status**: 🟢 **ONLINE & STABLE**
 - **Database**: ✅ **Connected & Operational**
@@ -525,8 +556,33 @@ npm start
 - **Concurrent Users**: Tested up to 50 users
 - **Mobile Compatibility**: ✅ Fully responsive
 
+### Latest Updates (v2.1.0)
+- ✅ **Edit Suggestion System**: Users can propose KPI changes without direct edit permissions
+- ✅ **Enhanced UI/UX**: Advanced CSS styling with gradients and animations
+- ✅ **CRUD Operations**: Complete Create, Read, Update, Delete functionality for KPIs
+- ✅ **Database Enhancements**: Added updated_date column for audit tracking
+- ✅ **Improved Modals**: Better dialog system with enhanced user experience
+- ✅ **Professional Styling**: Applied consistent design patterns across all components
+
 ---
 
-**🚀 Tech Stack Summary: Angular 16 + .NET 8 + SQL Server + JWT Authentication**
+**🚀 Tech Stack Summary: Angular 16 + .NET 8 + SQL Server + JWT Authentication + Enhanced UI/UX**
+
+### 📈 Project Statistics (v2.1.0)
+- **Backend APIs:** 18+ endpoints (enhanced with edit suggestions)
+- **Frontend Components:** 12+ components with advanced styling
+- **Database Tables:** 8+ tables with updated_date tracking
+- **Authentication:** JWT-based security with BCrypt hashing
+- **UI Framework:** Angular Material + Enhanced Custom CSS with gradients
+- **Responsive Design:** Desktop, Tablet, Mobile optimized
+- **New Features:** Edit Suggestion System, Full CRUD Operations, Professional Styling
+
+### 🏆 Key Achievements
+- ✅ **Complete KPI Lifecycle Management**: From creation to evaluation to suggestions
+- ✅ **User-Friendly Interface**: Professional styling with smooth animations
+- ✅ **Collaborative Features**: Edit suggestion system for team collaboration
+- ✅ **Security-First Approach**: JWT authentication with proper validation
+- ✅ **Responsive Design**: Works seamlessly across all devices
+- ✅ **Production Ready**: Stable, tested, and deployed successfully
 
 *Built with ❤️ for Hanoi University of Civil Engineering*

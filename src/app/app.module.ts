@@ -19,8 +19,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AssignedKpiViewComponent } from './FE/dashboard/assigned-kpi-view/assigned-kpi-view.component';
 import { CreateKpiComponent } from './FE/dashboard/create-kpi/create-kpi.component';
+import { EditKpiDialogComponent } from './FE/dashboard/unit-kpi-view/edit-kpi-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +36,7 @@ import { CreateKpiComponent } from './FE/dashboard/create-kpi/create-kpi.compone
     UnitKpiViewComponent,
     AssignedKpiViewComponent,
     CreateKpiComponent,
+    EditKpiDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +51,12 @@ import { CreateKpiComponent } from './FE/dashboard/create-kpi/create-kpi.compone
     MatSelectModule,
     MatFormFieldModule,
     MatButtonModule,
-    MatSortModule
+    MatSortModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatInputModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
