@@ -13,6 +13,7 @@ export interface LoginResponse {
   username: string;
   fullName: string;
   roles: string[];
+  userId?: number;
 }
 
 export interface User {
@@ -38,7 +39,16 @@ export class AuthService {
     const userInfo = localStorage.getItem('user_info');
     
     if (token && userInfo) {
-      this.currentUserSubject.next(JSON.parse(userInfo));
+      try {
+        const user = JSON.parse(userInfo);
+        console.log('Initializing AuthService with user:', user);
+        this.currentUserSubject.next(user);
+      } catch (error) {
+        console.error('Error parsing user info from localStorage:', error);
+        // Clear invalid data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user_info');
+      }
     }
   }
 
@@ -51,14 +61,16 @@ export class AuthService {
           localStorage.setItem('user_info', JSON.stringify({
             username: response.username,
             fullName: response.fullName,
-            roles: response.roles
+            roles: response.roles,
+            userId: response.userId
           }));
           
           // Update current user
           this.currentUserSubject.next({
             username: response.username,
             fullName: response.fullName,
-            roles: response.roles
+            roles: response.roles,
+            userId: response.userId
           });
         })
       );
@@ -81,6 +93,37 @@ export class AuthService {
 
   getCurrentUser(): any {
     return this.currentUserSubject.value;
+  }
+
+  getCurrentUserId(): number | null {
+    const user = this.getCurrentUser();
+    console.log('getCurrentUserId - Current user:', user);
+    
+    if (user && user.userId) {
+      return user.userId;
+    }
+    
+    // Fallback: try to get from localStorage directly
+    const userInfo = localStorage.getItem('user_info');
+    if (userInfo) {
+      try {
+        const parsedUser = JSON.parse(userInfo);
+        console.log('getCurrentUserId - Parsed user from localStorage:', parsedUser);
+        if (parsedUser.userId) {
+          return parsedUser.userId;
+        }
+      } catch (error) {
+        console.error('Error parsing user info:', error);
+      }
+    }
+    
+    console.warn('No userId found. User may need to re-login.');
+    return null;
+  }
+
+  isUserDataComplete(): boolean {
+    const user = this.getCurrentUser();
+    return !!(user && user.userId && user.username);
   }
 
   getAuthHeaders(): HttpHeaders {

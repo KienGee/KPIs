@@ -143,4 +143,13 @@ export class AssignedKpiViewComponent implements OnInit {
   formatDate(dateString: string): string {
     return new Date(dateString).toLocaleDateString('vi-VN');
   }
+
+  getUserDisplayName(): string {
+    const user = this.authService.getCurrentUser();
+    if (user) {
+      // Ưu tiên hiển thị fullName, nếu không có thì dùng username
+      return user.fullName || user.username || 'Người dùng';
+    }
+    return 'Người dùng';
+  }
 }

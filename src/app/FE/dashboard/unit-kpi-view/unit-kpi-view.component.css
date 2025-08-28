@@ -29,6 +29,61 @@
   font-style: italic !important;
 }
 
+/* Styles cho table với font chữ lớn */
+.large-text-table {
+  width: 100%;
+}
+
+.large-header {
+  font-size: 18px !important;
+  font-weight: bold !important;
+  padding: 16px !important;
+  color: #2c3e50 !important;
+}
+
+.large-cell {
+  font-size: 16px !important;
+  padding: 16px !important;
+  line-height: 1.5 !important;
+}
+
+.large-text-table .mat-row {
+  min-height: 60px !important;
+}
+
+.large-text-table .mat-header-row {
+  min-height: 64px !important;
+}
+
+/* Container với scroll cho bảng */
+.table-container-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.table-container-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-container-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-container-scroll::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.table-container-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
 /* Form Field */
 .form-field {
   margin-bottom: 30px;
@@ -37,6 +92,66 @@
 
 .form-field mat-form-field {
   width: 100%;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: 0.25em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spinner-border 0.75s linear infinite;
+}
+
+@keyframes spinner-border {
+  to { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #666;
+}
+
+.empty-state h3 {
+  margin: 1rem 0 0.5rem 0;
+  color: #333;
+}
+
+.empty-state p {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  max-width: 400px;
+}
+
+/* KPI Summary */
+.kpi-summary {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.kpi-summary .flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 /* Table Styling */

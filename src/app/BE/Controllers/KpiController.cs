@@ -2,6 +2,7 @@ using KpiApi.Models;
 using KpiApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace KpiApi.Controllers
 {
@@ -43,6 +44,43 @@ namespace KpiApi.Controllers
             return CreatedAtAction(nameof(GetKpi), new { id = createdKpi.KpiId }, createdKpi);
         }
 
+        [HttpPost("create-with-dto")]
+        public async Task<ActionResult<KpiResponseDto>> CreateKpiWithDto([FromBody] CreateKpiDto createKpiDto)
+        {
+            // Get current user ID from JWT token
+            var currentUserIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            int? currentUserId = null;
+            if (currentUserIdClaim != null && int.TryParse(currentUserIdClaim.Value, out int userId))
+            {
+                currentUserId = userId;
+            }
+
+            // Convert DTO to model
+            var kpi = new Kpi
+            {
+                KpiName = createKpiDto.kpiName,
+                Description = createKpiDto.description,
+                KpiType = createKpiDto.kpiType,
+                MeasurementUnit = createKpiDto.measurementUnit,
+                CreatedByUserId = currentUserId,
+                CreatedDate = DateTime.Now
+            };
+
+            var createdKpi = await _kpiService.CreateKpiAsync(kpi);
+
+            // Convert back to response DTO
+            var responseDto = new KpiResponseDto
+            {
+                kpiId = createdKpi.KpiId,
+                kpiName = createdKpi.KpiName,
+                description = createdKpi.Description ?? string.Empty,
+                kpiType = createdKpi.KpiType ?? string.Empty,
+                measurementUnit = createdKpi.MeasurementUnit ?? string.Empty
+            };
+
+            return Ok(responseDto);
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<Kpi>> UpdateKpi(int id, [FromBody] Kpi kpi)
         {
@@ -79,6 +117,15 @@ namespace KpiApi.Controllers
         {
             var assignedKpis = await _kpiService.GetAssignedKpisByUserAsync(userId);
             return Ok(assignedKpis);
+        }
+
+        [HttpGet("created-by/{userId}")]
+        public async Task<ActionResult<IEnumerable<Kpi>>> GetKpisByCreatedUser(int userId)
+        {
+            Console.WriteLine($"API Call: GetKpisByCreatedUser, userId: {userId}");
+            var kpis = await _kpiService.GetKpisByCreatedUserAsync(userId);
+            Console.WriteLine($"Found {kpis.Count()} KPIs for user {userId}");
+            return Ok(kpis);
         }
 
         [HttpPost("assigned")]

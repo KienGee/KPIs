@@ -14,6 +14,7 @@ namespace KpiApi.Services
         Task<IEnumerable<AssignedKpi>> GetAssignedKpisAsync();
         Task<IEnumerable<AssignedKpi>> GetAssignedKpisByUserAsync(int userId);
         Task<AssignedKpi?> CreateAssignedKpiAsync(AssignedKpi assignedKpi);
+        Task<IEnumerable<Kpi>> GetKpisByCreatedUserAsync(int userId);
     }
 
     public class KpiService : IKpiService
@@ -94,6 +95,22 @@ namespace KpiApi.Services
             _context.AssignedKpis.Add(assignedKpi);
             await _context.SaveChangesAsync();
             return assignedKpi;
+        }
+
+        public async Task<IEnumerable<Kpi>> GetKpisByCreatedUserAsync(int userId)
+        {
+            Console.WriteLine($"Service: GetKpisByCreatedUserAsync, userId: {userId}");
+            var kpis = await _context.Kpis
+                .Include(k => k.CreatedByUser)
+                .Where(k => k.CreatedByUserId == userId)
+                .OrderByDescending(k => k.CreatedDate)
+                .ToListAsync();
+            Console.WriteLine($"Service: Found {kpis.Count} KPIs for user {userId}");
+            foreach (var kpi in kpis)
+            {
+                Console.WriteLine($"  - KPI: {kpi.KpiName}, CreatedBy: {kpi.CreatedByUserId}");
+            }
+            return kpis;
         }
     }
 }

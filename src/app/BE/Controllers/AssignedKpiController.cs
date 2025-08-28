@@ -32,8 +32,7 @@ namespace KpiApi.Controllers
 
                 Console.WriteLine($"Getting KPIs for user ID: {userId}");
 
-                // Allow all authenticated users to view their assigned KPIs
-                // Removed role-based restriction as all roles should see their KPIs
+                
 
                 var query = _context.AssignedKpis
                     .Where(ak => ak.AssigneeUserId == userId);

@@ -8,6 +8,8 @@ export interface Kpi {
   description?: string;
   kpiType?: string;
   measurementUnit?: string;
+  createdByUserId?: number;
+  createdDate?: string;
 }
 
 export interface AssignedKpi {
@@ -37,7 +39,7 @@ export interface Department {
   providedIn: 'root'
 })
 export class KpiService {
-  private apiUrl = 'https://localhost:7297/api';
+  private apiUrl = 'http://localhost:5197/api';
 
   constructor(private http: HttpClient) { }
 
@@ -89,6 +91,14 @@ export class KpiService {
 
   getAssignedKpisByUser(userId: number): Observable<AssignedKpi[]> {
     return this.http.get<AssignedKpi[]>(`${this.apiUrl}/kpi/assigned/user/${userId}`, {
+      headers: this.getAuthHeaders()
+    });
+  }
+
+  getKpisByCreatedUser(userId: number): Observable<Kpi[]> {
+    console.log('API Call: getKpisByCreatedUser, userId:', userId);
+    console.log('API URL:', `${this.apiUrl}/kpi/created-by/${userId}`);
+    return this.http.get<Kpi[]>(`${this.apiUrl}/kpi/created-by/${userId}`, {
       headers: this.getAuthHeaders()
     });
   }

@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSortModule } from '@angular/material/sort';
 import { AssignedKpiViewComponent } from './FE/dashboard/assigned-kpi-view/assigned-kpi-view.component';
+import { CreateKpiComponent } from './FE/dashboard/create-kpi/create-kpi.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AssignedKpiViewComponent } from './FE/dashboard/assigned-kpi-view/assig
     DashboardComponent,
     UnitKpiViewComponent,
     AssignedKpiViewComponent,
+    CreateKpiComponent,
   ],
   imports: [
     BrowserModule,

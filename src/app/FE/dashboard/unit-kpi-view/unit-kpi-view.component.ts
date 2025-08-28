@@ -1,84 +1,174 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { KpiService, Kpi } from '../../../shared/services/kpi.service';
+import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
   selector: 'app-unit-kpi-view',
   templateUrl: './unit-kpi-view.component.html',
   styleUrls: ['./unit-kpi-view.component.css']
 })
-export class UnitKpiViewComponent {
+export class UnitKpiViewComponent implements OnInit {
+  @Output() navigateToCreate = new EventEmitter<void>();
+  
   selectedUnit: number = 1;
-  kpis: any = true;
+  kpis: Kpi[] = [];
+  isLoading: boolean = false;
+  currentUserId: number | null = null;
 
-  // Mock data
-  units = [
-    { id: 1, name: 'Phòng Đào tạo' },
-    { id: 2, name: 'Phòng Tài chính' },
-    { id: 3, name: 'Khoa Xây dựng' },
-    { id: 4, name: 'Khoa Cơ khí' }
-  ];
+
 
   aiInsights: string = '';
 
   // Table data sources
-  functionDataSource = new MatTableDataSource([
-    { stt: 1, indicator: 'Số sinh viên tốt nghiệp', target: '1000', weight: '20%', formula: 'Số lượng/năm', actual: '950', score: 95 },
-    { stt: 2, indicator: 'Tỷ lệ sinh viên có việc làm', target: '85%', weight: '15%', formula: '(Có việc/Tổng SV)*100', actual: '88%', score: 103 },
-    { stt: 3, indicator: 'Số đề tài nghiên cứu', target: '5', weight: '10%', formula: 'Số lượng/năm', actual: '6', score: 120 }
-  ]);
+  functionDataSource = new MatTableDataSource<any>([]);
+  targetDataSource = new MatTableDataSource<any>([]);
+  complianceDataSource = new MatTableDataSource<any>([]);
 
-  targetDataSource = new MatTableDataSource([
-    { stt: 1, indicator: 'Tăng trưởng sinh viên', target: '10%', weight: '25%', formula: '(Năm nay-Năm trước)/Năm trước*100', actual: '12%', score: 120 },
-    { stt: 2, indicator: 'Cải thiện chất lượng giảng dạy', target: '4.0/5', weight: '20%', formula: 'Điểm đánh giá TB', actual: '4.2/5', score: 105 }
-  ]);
+  // Column definitions for each table - bỏ cột STT, thêm measurement_unit
+  functionColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate'];
+  targetColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate'];
+  complianceColumns = ['indicator', 'formula', 'measurementUnit', 'createdDate'];
 
-  complianceDataSource = new MatTableDataSource([
-    { stt: 1, indicator: 'Tuân thủ quy chế tài chính', target: '100%', weight: '30%', formula: 'Báo cáo kiểm toán', actual: '98%', score: 98 },
-    { stt: 2, indicator: 'Thực hiện đúng quy trình ISO', target: '100%', weight: '25%', formula: 'Audit nội bộ', actual: '100%', score: 100 }
-  ]);
+  constructor(
+    private kpiService: KpiService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  // Column definitions for each table
-  functionColumns = ['stt', 'indicator', 'target', 'weight', 'formula', 'actual', 'score'];
-  targetColumns = ['stt', 'indicator', 'target', 'weight', 'formula', 'actual', 'score'];
-  complianceColumns = ['stt', 'indicator', 'target', 'weight', 'formula', 'actual', 'score'];
+  ngOnInit() {
+    console.log('=== UnitKpiViewComponent ngOnInit ===');
+    console.log('Is authenticated:', this.authService.isAuthenticated());
+    console.log('Is user data complete:', this.authService.isUserDataComplete());
+    
+    this.currentUserId = this.authService.getCurrentUserId();
+    console.log('Current User ID:', this.currentUserId);
+    console.log('Current User:', this.authService.getCurrentUser());
+    console.log('localStorage user_info:', localStorage.getItem('user_info'));
+    
+    this.loadKpis();
+  }
 
   // Calculated totals
   get totalFunction(): number {
-    return this.functionDataSource.data.reduce((sum: number, item: any) => sum + item.score, 0) / this.functionDataSource.data.length;
+    return this.functionDataSource.data.length > 0 
+      ? this.functionDataSource.data.reduce((sum: number, item: any) => sum + item.score, 0) / this.functionDataSource.data.length
+      : 0;
   }
 
   get totalTarget(): number {
-    return this.targetDataSource.data.reduce((sum: number, item: any) => sum + item.score, 0) / this.targetDataSource.data.length;
+    return this.targetDataSource.data.length > 0
+      ? this.targetDataSource.data.reduce((sum: number, item: any) => sum + item.score, 0) / this.targetDataSource.data.length
+      : 0;
   }
 
   get totalCompliance(): number {
-    return this.complianceDataSource.data.reduce((sum: number, item: any) => sum + item.score, 0) / this.complianceDataSource.data.length;
+    return this.complianceDataSource.data.length > 0
+      ? this.complianceDataSource.data.reduce((sum: number, item: any) => sum + item.score, 0) / this.complianceDataSource.data.length
+      : 0;
   }
 
   loadKpis() {
-    console.log('Loading KPIs for unit:', this.selectedUnit);
-    // Here you would typically call a service to load data
-    this.kpis = true;
+    if (!this.currentUserId) {
+      console.error('User not logged in or userId not available');
+      console.log('User info from localStorage:', localStorage.getItem('user_info'));
+      
+      // Try to get user info from localStorage directly
+      const userInfo = localStorage.getItem('user_info');
+      if (userInfo) {
+        const user = JSON.parse(userInfo);
+        console.log('Parsed user info:', user);
+        if (user.userId) {
+          this.currentUserId = user.userId;
+        } else {
+          // User info doesn't have userId, need to re-login
+          console.warn('User info missing userId, please re-login');
+          return;
+        }
+      } else {
+        console.warn('No user info found, please login');
+        return;
+      }
+    }
+
+    this.isLoading = true;
+    console.log('Loading KPIs for user:', this.currentUserId);
+    
+    this.kpiService.getKpisByCreatedUser(this.currentUserId!).subscribe({
+      next: (kpis) => {
+        this.kpis = kpis;
+        this.organizeKpisByType();
+        this.isLoading = false;
+        console.log('Loaded KPIs:', kpis);
+      },
+      error: (error) => {
+        console.error('Error loading KPIs:', error);
+        this.isLoading = false;
+        // Fall back to empty arrays
+        this.functionDataSource.data = [];
+        this.targetDataSource.data = [];
+        this.complianceDataSource.data = [];
+      }
+    });
   }
 
-  exportToExcel() {
-    console.log('Exporting to Excel...');
-    alert('Tính năng xuất Excel đang được phát triển!');
+  organizeKpisByType() {
+    // Organize KPIs by type into table data
+    const functionKpis: any[] = [];
+    const targetKpis: any[] = [];
+    const complianceKpis: any[] = [];
+
+    console.log('=== Organizing KPIs by Type ===');
+    console.log('Total KPIs to process:', this.kpis.length);
+
+    this.kpis.forEach((kpi, index) => {
+      console.log(`KPI ${index + 1}: ${kpi.kpiName} - Type: "${kpi.kpiType}"`);
+      
+      const tableRow = {
+        indicator: kpi.kpiName,
+        formula: kpi.description || 'Chưa có mô tả', // Use description as formula/method
+        measurementUnit: kpi.measurementUnit || 'Chưa xác định',
+        createdDate: kpi.createdDate ? new Date(kpi.createdDate).toLocaleDateString('vi-VN') : 'N/A'
+      };
+
+      switch (kpi.kpiType?.toLowerCase()) {
+        case 'functional':
+        case 'chuc nang':
+        case 'chức năng':
+          console.log(`-> Adding to Function KPIs`);
+          functionKpis.push(tableRow);
+          break;
+        case 'objective':
+        case 'muc tieu':
+        case 'mục tiêu':
+          console.log(`-> Adding to Target KPIs`);
+          targetKpis.push(tableRow);
+          break;
+        case 'discipline':
+        case 'tuan thu':
+        case 'tuân thủ':
+          console.log(`-> Adding to Compliance KPIs`);
+          complianceKpis.push(tableRow);
+          break;
+        default:
+          console.log('Unknown KPI type:', kpi.kpiType, '-> Adding to Function KPIs');
+          // If no type specified, add to functional
+          functionKpis.push(tableRow);
+      }
+    });
+
+    console.log('Final counts:');
+    console.log('Function KPIs:', functionKpis.length);
+    console.log('Target KPIs:', targetKpis.length);
+    console.log('Compliance KPIs:', complianceKpis.length);
+
+    this.functionDataSource.data = functionKpis;
+    this.targetDataSource.data = targetKpis;
+    this.complianceDataSource.data = complianceKpis;
   }
 
-  generateReport() {
-    console.log('Generating report...');
-    alert('Tính năng tạo báo cáo đang được phát triển!');
-  }
-
-  analyzeWithAI() {
-    console.log('Analyzing with AI...');
-    this.aiInsights = `Phân tích AI cho đơn vị ${this.units.find(u => u.id === this.selectedUnit)?.name}:
-
-• Chức năng: Điểm trung bình ${this.totalFunction.toFixed(1)} - Tốt
-• Mục tiêu: Điểm trung bình ${this.totalTarget.toFixed(1)} - Xuất sắc  
-• Tuân thủ: Điểm trung bình ${this.totalCompliance.toFixed(1)} - Tốt
-
-Khuyến nghị: Tập trung cải thiện các chỉ số chức năng để đạt mức xuất sắc.`;
+  navigateToCreateKpi(): void {
+    this.navigateToCreate.emit();
   }
 }

@@ -1,0 +1,115 @@
+<div class="create-kpi-container w-full flex flex-col items-center justify-center p-6">
+  <div class="form-container w-full max-w-4xl mx-auto p-8 rounded-2xl">
+    <h2 class="form-title text-4xl font-bold mb-8">
+      <span class="text-5xl"></span><br>
+      Tạo KPI Mới
+    </h2>
+    <form class="space-y-8">
+      <div class="form-grid grid grid-cols-1 md:grid-cols-2">
+        <!-- Tên KPI -->
+        <div class="md:col-span-2">
+          <label
+            for="kpi_name"
+            class="form-label block mb-2"
+          >
+            Tên KPI <span class="required">*</span>
+          </label>
+          <input
+            id="kpi_name"
+            placeholder="Ví dụ: Tỷ lệ hoàn thành công việc"
+            class="form-input block w-full px-4 py-3 rounded-lg text-sm"
+            type="text"
+            name="kpiName"
+            [(ngModel)]="kpiName"
+          />
+        </div>
+
+        <!-- Loại KPI -->
+        <div>
+          <label
+            for="kpi_type"
+            class="form-label block mb-2"
+          >
+            Loại KPI <span class="required">*</span>
+          </label>
+          <select
+            id="kpi_type"
+            required=""
+            class="form-select block w-full pl-4 pr-10 py-3 text-base rounded-lg"
+            [(ngModel)]="kpiType"
+            name="kpiType"
+          >
+            <option value="">-- Chọn loại KPI --</option>
+            <option value="Functional">🎯 Chức năng</option>
+            <option value="Objective">📊 Mục tiêu</option>
+            <option value="Discipline">📋 Tuân thủ</option>
+          </select>
+        </div>
+
+        <!-- Đơn vị đo lường -->
+        <div>
+          <label
+            for="measurement_unit"
+            class="form-label block mb-2"
+          >
+            Đơn vị đo lường <span class="required">*</span>
+          </label>
+          <select
+            [(ngModel)]="measurementUnit"
+            name="measurementUnit"
+            id="measurement_unit"
+            class="form-select block w-full pl-4 pr-10 py-3 text-base rounded-lg"
+          >
+            <option value="">-- Chọn đơn vị --</option>
+            <option value="%">📈 % (Phần trăm)</option>
+            <option value="Điểm">⭐ Điểm</option>
+            <option value="Số lượng">🔢 Số lượng</option>
+            <option value="Ngày">📅 Ngày</option>
+            <option value="Giờ">⏰ Giờ</option>
+            <option value="Lần">🔄 Lần</option>
+            <option value="VND">💰 VND</option>
+            <option value="USD">💵 USD</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Mô tả -->
+      <div>
+        <label
+          for="description"
+          class="form-label block mb-2"
+        >
+          📝 Mô tả chi tiết
+        </label>
+        <textarea
+          name="description"
+          [(ngModel)]="description"
+          id="description"
+          placeholder="Mô tả mục đích, cách tính, ý nghĩa và tầm quan trọng của KPI này..."
+          rows="4"
+          class="form-textarea block w-full px-4 py-3 rounded-lg text-sm resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex flex-col items-center pt-4">
+        <button
+          type="submit"
+          (click)="OnSubmit()"
+          [disabled]="!kpiName.trim() || !kpiType || !measurementUnit.trim() || isLoading"
+          [class.loading]="isLoading"
+          class="submit-btn inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl text-white min-w-[250px] relative"
+        >
+          <span *ngIf="!isLoading" class="mr-2 text-lg"></span>
+          <span *ngIf="isLoading" class="mr-2 text-lg">⏳</span>
+          {{ isLoading ? 'Đang tạo KPI...' : 'Tạo KPI Ngay' }}
+        </button>
+        
+        <p class="helper-text">
+          <span *ngIf="!isLoading">💡 Vui lòng điền đầy đủ thông tin bắt buộc để tạo KPI</span>
+          <span *ngIf="isLoading">⚡ Đang xử lý yêu cầu của bạn...</span>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

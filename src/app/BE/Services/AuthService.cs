@@ -47,7 +47,8 @@ namespace KpiApi.Services
                 Token = token,
                 Username = user.Username,
                 FullName = user.FullName,
-                Roles = roles
+                Roles = roles,
+                UserId = user.UserId
             };
         }
 

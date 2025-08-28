@@ -153,7 +153,13 @@ namespace KpiApi.Models
         [StringLength(50)]
         [Column("measurement_unit")]
         public string? MeasurementUnit { get; set; }
+        [Column("created_by_user_id")]
+        public int? CreatedByUserId { get; set; }
+        [Column("created_date")]
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
+        // Navigation properties
+        public virtual User? CreatedByUser { get; set; }
         public virtual ICollection<AssignedKpi> AssignedKpis { get; set; } = new List<AssignedKpi>();
     }
 
@@ -230,6 +236,7 @@ namespace KpiApi.Models
         public string Username { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public List<string> Roles { get; set; } = new List<string>();
+        public int UserId { get; set; }
     }
 
     public class UserCreateRequest
@@ -245,5 +252,30 @@ namespace KpiApi.Models
         public string Email { get; set; } = string.Empty;
         public int? DepartmentId { get; set; }
         public string? JobTitle { get; set; }
+    }
+
+    // KPI DTOs
+    public class CreateKpiDto
+    {
+        [Required]
+        [StringLength(255)]
+        public string kpiName { get; set; } = string.Empty;
+        
+        public string description { get; set; } = string.Empty;
+        
+        [StringLength(20)]
+        public string kpiType { get; set; } = string.Empty;
+        
+        [StringLength(50)]
+        public string measurementUnit { get; set; } = string.Empty;
+    }
+
+    public class KpiResponseDto
+    {
+        public int kpiId { get; set; }
+        public string kpiName { get; set; } = string.Empty;
+        public string description { get; set; } = string.Empty;
+        public string kpiType { get; set; } = string.Empty;
+        public string measurementUnit { get; set; } = string.Empty;
     }
 }

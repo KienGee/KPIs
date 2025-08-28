@@ -66,8 +66,8 @@ export class DashboardComponent implements OnInit {
   }
 
   navigateToMyKpis(): void {
-    this.currentPage = 'KPI của tôi';
-    console.log('Navigating to KPI của tôi within dashboard');
+    this.currentPage = 'KPI được giao';
+    console.log('Navigating to KPI được giao within dashboard');
   }
 
   navigateTo(page: string) {
@@ -82,6 +82,9 @@ export class DashboardComponent implements OnInit {
       case 'KPI Đơn vị':
         // Tạo route mới hoặc hiển thị component khác
         console.log('Chuyển đến trang KPI Đơn vị');
+        break;
+      case 'Tạo KPIs':
+        console.log('Chuyển đến trang Tạo KPIs');
         break;
       case 'Báo cáo':
         console.log('Chuyển đến trang Báo cáo');

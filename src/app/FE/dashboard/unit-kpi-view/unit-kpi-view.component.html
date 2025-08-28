@@ -1,154 +1,129 @@
 <div class="kpi-container">
   <mat-card class="kpi-card">
     <mat-card-header class="card-header">
-      <mat-card-title class="card-title">Xem KPIs Đơn vị - Năm 2025</mat-card-title>
-      <mat-card-subtitle class="card-subtitle">Theo Quyết định 1125/QD-DHXDHN</mat-card-subtitle>
+      <mat-card-title class="card-title">KPI Đã Tạo</mat-card-title>
+      <mat-card-subtitle class="card-subtitle">Danh sách các KPI mà bạn đã tạo trong hệ thống</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-      <div class="form-field">
-        <mat-form-field appearance="fill">
-          <mat-label>Chọn Đơn vị</mat-label>
-          <mat-select [(value)]="selectedUnit" (selectionChange)="loadKpis()">
-            <mat-option *ngFor="let unit of units" [value]="unit.id">{{ unit.name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+      <!-- Loading state -->
+      <div *ngIf="isLoading" class="loading-container text-center py-8">
+        <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+        <p class="mt-3">Đang tải dữ liệu KPI...</p>
       </div>
 
-      <mat-tab-group *ngIf="kpis">
+      <!-- Empty state -->
+      <div *ngIf="!isLoading && kpis.length === 0" class="empty-state text-center py-8">
+        <div class="text-6xl mb-4">📊</div>
+        <h3 class="text-xl font-semibold mb-2">Chưa có KPI nào được tạo</h3>
+        <p class="text-gray-600 mb-4">Bạn chưa tạo KPI nào trong hệ thống. Hãy tạo KPI đầu tiên của bạn!</p>
+        <div class="flex gap-4 justify-center">
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" 
+                  (click)="navigateToCreateKpi()">
+            Tạo KPI Mới
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI content -->
+      <div *ngIf="!isLoading && kpis.length > 0">
+        <div class="kpi-summary mb-6">
+          <div class="flex flex-wrap gap-2">
+            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+              Tổng số KPI: {{ kpis.length }}
+            </span>
+            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+              Chức năng: {{ functionDataSource.data.length }}
+            </span>
+            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+              Mục tiêu: {{ targetDataSource.data.length }}
+            </span>
+            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">
+              Tuân thủ: {{ complianceDataSource.data.length }}
+            </span>
+          </div>
+        </div>
+
+        <mat-tab-group>
         <mat-tab label="KPI Chức năng">
-          <div class="table-container">
-            <mat-table [dataSource]="functionDataSource" matSort>
-              <ng-container matColumnDef="stt">
-                <mat-header-cell *matHeaderCellDef>STT</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.stt}}</mat-cell>
-              </ng-container>
+          <div class="table-container-scroll">
+            <mat-table [dataSource]="functionDataSource" matSort class="large-text-table">
               <ng-container matColumnDef="indicator">
-                <mat-header-cell *matHeaderCellDef>Chỉ tiêu</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.indicator}}</mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="target">
-                <mat-header-cell *matHeaderCellDef>Mục tiêu</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.target}}</mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="weight">
-                <mat-header-cell *matHeaderCellDef>Trọng số</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.weight}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef class="large-header">Tên KPI</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.indicator}}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="formula">
-                <mat-header-cell *matHeaderCellDef>Công thức</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.formula}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef class="large-header">Mô tả</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.formula}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="actual">
-                <mat-header-cell *matHeaderCellDef>Thực tế</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.actual}}</mat-cell>
+              <ng-container matColumnDef="measurementUnit">
+                <mat-header-cell *matHeaderCellDef class="large-header">Đơn vị đo</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.measurementUnit}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="score">
-                <mat-header-cell *matHeaderCellDef>Điểm KPI</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.score}}</mat-cell>
+              <ng-container matColumnDef="createdDate">
+                <mat-header-cell *matHeaderCellDef class="large-header">Ngày tạo</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.createdDate}}</mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="functionColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: functionColumns;"></mat-row>
             </mat-table>
-            <div class="total-score">Tổng KPI Chức năng: {{ totalFunction }}</div>
           </div>
         </mat-tab>
 
         <mat-tab label="KPI Mục tiêu">
-          <div class="table-container">
-            <mat-table [dataSource]="targetDataSource" matSort>
-              <ng-container matColumnDef="stt">
-                <mat-header-cell *matHeaderCellDef>STT</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.stt}}</mat-cell>
-              </ng-container>
+          <div class="table-container-scroll">
+            <mat-table [dataSource]="targetDataSource" matSort class="large-text-table">
               <ng-container matColumnDef="indicator">
-                <mat-header-cell *matHeaderCellDef>Chỉ tiêu</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.indicator}}</mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="target">
-                <mat-header-cell *matHeaderCellDef>Mục tiêu</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.target}}</mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="weight">
-                <mat-header-cell *matHeaderCellDef>Trọng số</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.weight}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef class="large-header">Tên KPI</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.indicator}}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="formula">
-                <mat-header-cell *matHeaderCellDef>Công thức</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.formula}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef class="large-header">Mô tả</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.formula}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="actual">
-                <mat-header-cell *matHeaderCellDef>Thực tế</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.actual}}</mat-cell>
+              <ng-container matColumnDef="measurementUnit">
+                <mat-header-cell *matHeaderCellDef class="large-header">Đơn vị đo</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.measurementUnit}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="score">
-                <mat-header-cell *matHeaderCellDef>Điểm KPI</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.score}}</mat-cell>
+              <ng-container matColumnDef="createdDate">
+                <mat-header-cell *matHeaderCellDef class="large-header">Ngày tạo</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.createdDate}}</mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="targetColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: targetColumns;"></mat-row>
             </mat-table>
-            <div class="total-score">Tổng KPI Mục tiêu: {{ totalTarget }}</div>
           </div>
         </mat-tab>
 
         <mat-tab label="KPI Tuân thủ">
-          <div class="table-container">
-            <mat-table [dataSource]="complianceDataSource" matSort>
-              <ng-container matColumnDef="stt">
-                <mat-header-cell *matHeaderCellDef>STT</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.stt}}</mat-cell>
-              </ng-container>
+          <div class="table-container-scroll">
+            <mat-table [dataSource]="complianceDataSource" matSort class="large-text-table">
               <ng-container matColumnDef="indicator">
-                <mat-header-cell *matHeaderCellDef>Chỉ tiêu</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.indicator}}</mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="target">
-                <mat-header-cell *matHeaderCellDef>Mục tiêu</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.target}}</mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="weight">
-                <mat-header-cell *matHeaderCellDef>Trọng số</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.weight}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef class="large-header">Tên KPI</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.indicator}}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="formula">
-                <mat-header-cell *matHeaderCellDef>Công thức</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.formula}}</mat-cell>
+                <mat-header-cell *matHeaderCellDef class="large-header">Mô tả</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.formula}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="actual">
-                <mat-header-cell *matHeaderCellDef>Thực tế</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.actual}}</mat-cell>
+              <ng-container matColumnDef="measurementUnit">
+                <mat-header-cell *matHeaderCellDef class="large-header">Đơn vị đo</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.measurementUnit}}</mat-cell>
               </ng-container>
-              <ng-container matColumnDef="score">
-                <mat-header-cell *matHeaderCellDef>Điểm KPI</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{row.score}}</mat-cell>
+              <ng-container matColumnDef="createdDate">
+                <mat-header-cell *matHeaderCellDef class="large-header">Ngày tạo</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="large-cell">{{row.createdDate}}</mat-cell>
               </ng-container>
               <mat-header-row *matHeaderRowDef="complianceColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: complianceColumns;"></mat-row>
             </mat-table>
-            <div class="total-score">Tổng KPI Tuân thủ: {{ totalCompliance }}</div>
           </div>
         </mat-tab>
       </mat-tab-group>
-
-      <div class="chart-section" *ngIf="kpis">
-        <h3>Phân tích KPI</h3>
-        <div class="chart-placeholder">
-          <div class="pie-chart-mock"></div>
-          <div class="chart-legend">
-            <div class="legend-item"><span class="color-1"></span> Chức năng ({{ totalFunction }})</div>
-            <div class="legend-item"><span class="color-2"></span> Mục tiêu ({{ totalTarget }})</div>
-            <div class="legend-item"><span class="color-3"></span> Tuân thủ ({{ totalCompliance }})</div>
-          </div>
-        </div>
       </div>
     </mat-card-content>
-
-    <mat-card-actions class="action-buttons">
-      <button mat-raised-button color="primary" (click)="exportToExcel()">Xuất Excel</button>
-      <button mat-raised-button color="accent" (click)="generateReport()">Tạo báo cáo</button>
-      <button mat-raised-button color="warn" (click)="analyzeWithAI()">Phân tích AI</button>
-    </mat-card-actions>
 
     <div class="ai-insights" *ngIf="aiInsights">
       <h3>🤖 Phân tích AI</h3>

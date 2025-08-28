@@ -57,16 +57,16 @@
             <span class="nav-text">Tổng quan</span>
           </a>
         </li>
-        <li class="nav-item" [class.active]="currentPage === 'KPI của tôi'" *ngIf="isPhoHieuTruong()">
+        <li class="nav-item" [class.active]="currentPage === 'KPI được giao'" *ngIf="isPhoHieuTruong()">
           <a href="#" class="nav-link" (click)="navigateToMyKpis(); $event.preventDefault()">
             <i class="nav-icon">📋</i>
-            <span class="nav-text">KPI của tôi</span>
+            <span class="nav-text">KPI được giao</span>
           </a>
         </li>
-        <li class="nav-item" [class.active]="currentPage === 'KPI Đơn vị'">
-          <a href="#" class="nav-link" (click)="navigateTo('KPI Đơn vị'); $event.preventDefault()">
+        <li class="nav-item" [class.active]="currentPage === 'KPI đã tạo'">
+          <a href="#" class="nav-link" (click)="navigateTo('KPI đã tạo'); $event.preventDefault()">
             <i class="nav-icon">📊</i>
-            <span class="nav-text">KPI Đơn vị</span>
+            <span class="nav-text">KPI đã tạo</span>
           </a>
         </li>
         <li class="nav-item" [class.active]="currentPage === 'Tạo KPIs'">
@@ -108,29 +108,18 @@
           <p class="welcome-message">Chào mừng bạn đến với hệ thống KPI của Trường Đại học Xây dựng</p>
         </div>
 
-        <!-- KPI Đơn vị Page -->
-        <div class="page-content" *ngIf="currentPage === 'KPI Đơn vị'">
-          <app-unit-kpi-view></app-unit-kpi-view>
+        <!-- KPI Đã tạo -->
+        <div class="page-content" *ngIf="currentPage === 'KPI đã tạo'">
+          <app-unit-kpi-view (navigateToCreate)="navigateTo('Tạo KPIs')"></app-unit-kpi-view>
         </div>
 
         <!-- Tạo KPIs Page -->
         <div class="page-content" *ngIf="currentPage === 'Tạo KPIs'">
-          <div class="info-card">
-            <h3 class="card-title">📈 Tạo KPIs</h3>
-            <div class="info-content">
-              <div class="info-text">
-                <p><strong>Thông tin KPIs:</strong></p>
-                <p>• Tên KPI: </p>
-                <p>• Mô tả: </p>
-                <p>• Đơn vị tính: </p>
-                <p>• Mục tiêu: </p>
-              </div>
-            </div>
-          </div>
+          <app-create-kpi></app-create-kpi>
         </div>
 
-        <!-- KPI của tôi Page -->
-        <div class="page-content" *ngIf="currentPage === 'KPI của tôi'">
+        <!-- KPI được giao Page -->
+        <div class="page-content" *ngIf="currentPage === 'KPI được giao'">
           <app-assigned-kpi-view></app-assigned-kpi-view>
         </div>
 
